@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "../../storage/framework/views/*.php";
+@source "../**/*.blade.php";
+@source "../**/*.js";
+
+/* ── Custom theme (Tailwind v4 syntax) ─────────────── */
+@theme {
+    --color-dragon-bg: #0d0d0c;
+    --color-dragon-panel: #191814;
+    --color-dragon-gold: #f2b90c;
+    --color-dragon-gold-soft: #c99a1e;
+    --color-dragon-ink: #f4f1e8;
+    --color-dragon-muted: #b9b4a6;
+
+    --font-display: "Anton", sans-serif;
+    --font-sans: "Inter", sans-serif;
+
+    --animate-marquee: marquee 35s linear infinite;
+
+    @keyframes marquee {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(-50%);
+        }
+    }
+}
+
+/* ── Custom utilities that reference theme values ─── */
+@layer utilities {
+    .scale-texture {
+        background-image: repeating-linear-gradient(
+            115deg,
+            rgba(242, 185, 12, 0.04) 0px,
+            rgba(242, 185, 12, 0.04) 2px,
+            transparent 2px,
+            transparent 28px
+        );
+    }
+
+    .hero-image-glow {
+        filter: drop-shadow(0 0 60px rgba(242, 185, 12, 0.25));
+    }
+}
+
+/* ── Component-level styles ────────────────────────── */
+.sport-card {
+    transition: border-color 0.2s ease, transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+.sport-card:hover {
+    border-color: #f2b90c;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px -12px rgba(242, 185, 12, 0.25);
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid #f2b90c;
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+:root {
+    --bg: #0d0d0c;
+    --bg-panel: #191814;
+    --gold: #f2b90c;
+    --gold-soft: #c99a1e;
+    --ink: #f4f1e8;
+    --ink-muted: #b9b4a6;
+}
+body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Inter", sans-serif;
+}
+.display {
+    font-family: "Anton", sans-serif;
+    letter-spacing: 0.01em;
+}
+.field {
+    background: var(--bg-panel);
+    border: 1px solid rgba(242, 185, 12, 0.2);
+    color: var(--ink);
+}
+.field:focus {
+    outline: none;
+    border-color: var(--gold);
+}
