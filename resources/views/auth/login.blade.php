@@ -52,7 +52,7 @@
             </label>
 
             <button type="submit"
-                class="w-full font-semibold rounded px-4 py-3 text-black" style="background: var(--gold);">
+                class="cursor-pointer w-full font-semibold rounded px-4 py-3 text-black" style="background: var(--gold);">
                 Log in
             </button>
         </form>

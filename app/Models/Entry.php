@@ -9,7 +9,7 @@ class Entry extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['category_id', 'team_name'];
+    protected $fillable = ['category_id'];
 
     public function category()
     {

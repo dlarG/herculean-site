@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class RegistrationController extends Controller
 {
+    // Adjust this list to match SLSU Sogod's actual offered programs
     public const PROGRAMS = [
         'BS Information Technology (BSIT)',
         'BS Hospitality Management (BSHM)',
@@ -45,7 +46,6 @@ class RegistrationController extends Controller
 
         $validated = $request->validate([
             'category_id' => 'required|exists:categories,id',
-            'team_name' => $category->max_members > 1 ? 'required|string|max:150' : 'nullable|string|max:150',
             'members' => "required|array|min:{$category->min_members}|max:{$category->max_members}",
             'members.*.full_name' => 'required|string|max:150',
             'members.*.student_number' => 'required|string|max:50',
@@ -59,7 +59,6 @@ class RegistrationController extends Controller
         $entry = DB::transaction(function () use ($validated, $category) {
             $entry = Entry::create([
                 'category_id' => $category->id,
-                'team_name' => $validated['team_name'] ?? null,
             ]);
 
             foreach ($validated['members'] as $member) {
@@ -71,6 +70,6 @@ class RegistrationController extends Controller
 
         return redirect()
             ->route('register.create')
-            ->with('success', "Registered for {$category->name} ({$category->gender_division}). Entry #{$entry->id}.");
+            ->with('success', "Registered for {$category->name}.");
     }
 }

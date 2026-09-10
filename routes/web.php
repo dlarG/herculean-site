@@ -18,4 +18,5 @@ Route::post('/admin/logout', [AuthController::class, 'logout'])->name('logout');
 // Protected admin routes
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+    Route::delete('/entries/{entry}', [AdminController::class, 'destroy'])->name('entries.destroy');
 });

@@ -32,12 +32,13 @@
 </head>
 <body class="antialiased">
 
-    <header class="border-b border-[rgba(242,185,12,0.14)]">
+    <header class="p-2 border-b border-[rgba(242,185,12,0.14)]">
         <div class="max-w-2xl mx-auto px-5 h-16 flex items-center justify-between">
-            <a href="{{ route('home') }}" class="flex items-center gap-2.5">
-                <span class="w-8 h-8 rounded-full border-2 flex items-center justify-center text-sm font-bold display"
-                      style="border-color: var(--gold); color: var(--gold);">HD</span>
-                <span class="font-semibold tracking-wide text-[15px]">Herculean Dragon</span>
+            <a href="{{ route('home') }}" class="flex items-center gap-3 group">
+                <img src="{{ asset('assets/navbar-logo.png') }}" 
+                    alt="Herculean Dragon Logo" 
+                    class="h-14 w-auto object-contain transition-opacity group-hover:opacity-90"
+                    onerror="this.onerror=null; this.style.display='none'; this.parentElement.querySelector('.logo-fallback').style.display='flex';">
             </a>
             <a href="{{ route('home') }}" class="text-sm text-[color:var(--ink-muted)] hover:text-[color:var(--gold)]">
                 &larr; Back to categories
@@ -84,11 +85,6 @@
                         </optgroup>
                     @endforeach
                 </select>
-            </div>
-
-            <div id="teamNameWrapper" class="hidden">
-                <label class="block font-medium mb-1.5 text-sm" for="team_name">Team name</label>
-                <input type="text" name="team_name" id="team_name" class="field w-full rounded px-3 py-2.5">
             </div>
 
             <div>
@@ -168,7 +164,6 @@
         const membersContainer = document.getElementById('membersContainer');
         const addMemberBtn = document.getElementById('addMemberBtn');
         const memberHint = document.getElementById('memberHint');
-        const teamNameWrapper = document.getElementById('teamNameWrapper');
         const categorySelect = document.getElementById('category_id');
         const template = document.getElementById('memberFieldTemplate');
         const form = document.getElementById('regForm');
@@ -203,7 +198,6 @@
             if (!cat) return;
 
             currentMax = cat.max_members;
-            teamNameWrapper.classList.toggle('hidden', !cat.is_team);
 
             memberHint.textContent = cat.min_members === cat.max_members
                 ? `Exactly ${cat.max_members} member(s)`
