@@ -7,7 +7,7 @@
 
 /* ── Custom theme (Tailwind v4 syntax) ─────────────── */
 @theme {
-    --color-dragon-bg: #0d0d0c;
+    --color-dragon-bg: white;
     --color-dragon-panel: #191814;
     --color-dragon-gold: #f2b90c;
     --color-dragon-gold-soft: #c99a1e;

@@ -15,9 +15,9 @@
   <header class="p-2 sticky top-0 z-40 bg-dragon-bg/95 backdrop-blur-sm border-b border-dragon-gold/15">
     <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
       <a href="{{ route('home') }}" class="flex items-center gap-3 group">
-        <img src="{{ asset('assets/navbar-logo.png') }}"
+        <img src="{{ asset('assets/panag-nobg.png') }}"
              alt="Herculean Dragon Logo"
-             class="h-14 w-auto object-contain transition-opacity group-hover:opacity-90"
+             class="h-18 w-auto object-contain transition-opacity group-hover:opacity-90"
              onerror="this.onerror=null; this.style.display='none'; this.parentElement.querySelector('.logo-fallback').style.display='flex';">
       </a>
 
