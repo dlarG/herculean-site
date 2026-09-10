@@ -8,15 +8,12 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $groups = Category::where('is_open', true)
+        $categories = Category::where('is_open', true)
             ->orderBy('group')
             ->orderBy('name')
-            ->get()
-            ->groupBy('group')
-            ->map(function ($items) {
-                // Collapse Men/Women variants into one card per sport name
-                return $items->pluck('name')->unique()->values();
-            });
+            ->get();
+
+        $groups = $categories->groupBy('group');
 
         return view('home', compact('groups'));
     }

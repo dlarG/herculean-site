@@ -10,7 +10,7 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'group', 'gender_division', 'min_members', 'max_members', 'is_open',
+        'name', 'description', 'group', 'gender_division', 'min_members', 'max_members', 'is_open',
     ];
 
     protected $casts = [
