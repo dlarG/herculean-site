@@ -26,6 +26,10 @@
     --pill-border: rgba(242, 185, 12, 0.25);
     --shadow-gold: rgba(242, 185, 12, 0.25);
     --overlay: rgba(0, 0, 0, 0.7);
+    --hero-overlay-top: rgba(0, 0, 0, 0.55);
+    --hero-overlay-mid: rgba(0, 0, 0, 0.75);
+    --hero-overlay-bottom: rgba(0, 0, 0, 0.9);
+    --hero-tint-opacity: 0.28;
 }
 
 [data-theme="light"] {
@@ -42,6 +46,10 @@
     --pill-border: rgba(201, 154, 30, 0.4);
     --shadow-gold: rgba(184, 137, 10, 0.2);
     --overlay: rgba(26, 23, 18, 0.55);
+    --hero-overlay-top: rgba(0, 0, 0, 0.25);
+    --hero-overlay-mid: rgba(0, 0, 0, 0.4);
+    --hero-overlay-bottom: rgba(0, 0, 0, 0.55);
+    --hero-tint-opacity: 0.18;
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -158,4 +166,58 @@ button:focus-visible {
         transition-duration: 0.01ms !important;
         animation-duration: 0.01ms !important;
     }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   LOGO SWAPPING BY THEME
+   .logo-dark  → visible in dark mode
+   .logo-light → visible in light mode
+   ───────────────────────────────────────────────────────────── */
+
+[data-theme="dark"] .logo-dark {
+    display: inline-block !important;
+}
+[data-theme="dark"] .logo-light {
+    display: none !important;
+}
+
+[data-theme="light"] .logo-dark {
+    display: none !important;
+}
+[data-theme="light"] .logo-light {
+    display: inline-block !important;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   MODERN SPORT CARD
+   ───────────────────────────────────────────────────────────── */
+
+.sport-card-modern {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    transition: border-color 0.25s ease, transform 0.25s ease,
+        box-shadow 0.25s ease;
+    will-change: transform;
+}
+
+.sport-card-modern:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.35),
+        0 0 0 1px rgba(242, 185, 12, 0.15);
+}
+
+.sport-card-modern img {
+    filter: saturate(0.95) brightness(0.95);
+    transition: transform 0.7s ease, filter 0.4s ease;
+}
+
+.sport-card-modern:hover img {
+    filter: saturate(1.15) brightness(1.05);
+}
+
+/* Light mode: slightly less aggressive shadow */
+[data-theme="light"] .sport-card-modern:hover {
+    box-shadow: 0 20px 40px -20px rgba(184, 137, 10, 0.3),
+        0 0 0 1px rgba(201, 154, 30, 0.25);
 }
