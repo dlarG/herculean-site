@@ -34,16 +34,16 @@
       <p class="text-xs uppercase tracking-[0.3em] font-semibold mb-4 flex items-center justify-center gap-3"
          style="color: var(--gold-soft);">
         <span class="inline-block w-8 h-px" style="background: var(--gold-soft);"></span>
-        About the Intramurals
+        SOARING BEYOND LIMITS
         <span class="inline-block w-8 h-px" style="background: var(--gold-soft);"></span>
       </p>
 
       {{-- Heading --}}
       <h2 class="font-display text-2xl sm:text-3xl lg:text-4xl leading-tight mb-6"
           style="color: var(--ink);">
-        Where <span style="color: var(--gold);">sports</span>,
-        <span style="color: var(--gold);">arts</span>, and
-        <span style="color: var(--gold);">school spirit</span> collide
+        Celebrating <span style="color: var(--gold);">Diversity</span>,
+        <span style="color: var(--gold);">Building unity</span>, <span style="color: var(--gold);"> through sports,</span>
+        <span style="color: var(--gold);">culture</span> and <span style="color: var(--gold);"> the Arts.</span>
       </h2>
 
       {{-- Body --}}
