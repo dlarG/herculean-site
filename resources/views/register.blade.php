@@ -33,7 +33,7 @@
 <body class="antialiased">
 
     <header class="p-2 border-b border-[rgba(242,185,12,0.14)]">
-        <div class="max-w-2xl mx-auto px-5 h-16 flex items-center justify-between">
+        <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
             <a href="{{ route('home') }}" class="flex items-center gap-3 group">
                 <img src="{{ asset('assets/navbar-logo.png') }}" 
                     alt="Herculean Dragon Logo" 
@@ -41,7 +41,7 @@
                     onerror="this.onerror=null; this.style.display='none'; this.parentElement.querySelector('.logo-fallback').style.display='flex';">
             </a>
             <a href="{{ route('home') }}" class="text-sm text-[color:var(--ink-muted)] hover:text-[color:var(--gold)]">
-                &larr; Back to categories
+                &larr; Back to home
             </a>
         </div>
     </header>
