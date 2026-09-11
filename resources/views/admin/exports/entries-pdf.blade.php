@@ -24,7 +24,7 @@
     .header-top {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
     }
     .brand {
       font-size: 22px;
@@ -166,11 +166,12 @@
     .signatures-grid {
       display: flex;
       justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 16px;
+      gap: 26px;
+      margin-bottom: 25px;
     }
     .signature-line {
       flex: 1;
+      width: 40%;
       text-align: center;
     }
     .signature-underline {
@@ -190,7 +191,7 @@
       color: #8a7c56;
       text-align: center;
       font-style: italic;
-      margin-top: 8px;
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -271,12 +272,6 @@
     </div>
   @endif
 
-  {{-- ===== FOOTER ===== --}}
-  <div class="footer">
-    Herculean Dragon · HTM &amp; Information Technology Department
-    &nbsp;·&nbsp;
-    Page <span class="page"></span>
-  </div>
 
 </body>
 </html>
