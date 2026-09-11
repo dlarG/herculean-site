@@ -228,13 +228,12 @@
                             <thead>
                                 <tr class="text-left text-xs uppercase tracking-wider text-[color:var(--ink-muted)] border-b border-[rgba(242,185,12,0.14)]">
                                     <th class="py-3 px-5 font-medium">Name</th>
-                                    <th class="py-3 px-4 font-medium">Stud Id</th>
+                                    <th class="py-3 px-4 font-medium">Stud ID</th>
                                     <th class="py-3 px-4 font-medium">Gender</th>
                                     <th class="py-3 px-4 font-medium">Program</th>
-                                    <th class="py-3 px-4 font-medium">Year</th>
+                                    {{-- <th class="py-3 px-4 font-medium">Year</th> --}}
                                     <th class="py-3 px-4 font-medium">Contact</th>
                                     <th class="py-3 px-4 font-medium">Facebook</th>
-                                    <th class="py-3 px-4 font-medium text-right w-px">Entry</th>
                                     <th class="py-3 px-4 font-medium text-right w-px"></th>
                                 </tr>
                             </thead>
@@ -251,36 +250,46 @@
                                                     {{ $member->full_name }}
                                                 </div>
                                             </td>
-                                            <td class="py-2.5 px-4 text-[color:var(--ink-muted)] font-mono text-xs">{{ $member->student_number }}</td>
+                                            <td class="py-2.5 px-4 text-[color:var(--ink-muted)]">{{ $member->student_number }}</td>
                                             <td class="py-2.5 px-4 text-[color:var(--ink-muted)]">{{ $member->gender }}</td>
                                             <td class="py-2.5 px-4 text-[color:var(--ink-muted)]">{{ $member->program }}</td>
-                                            <td class="py-2.5 px-4 text-[color:var(--ink-muted)]">{{ $member->year_level }}</td>
+                                            {{-- <td class="py-2.5 px-4 text-[color:var(--ink-muted)]">{{ $member->year_level }}</td> --}}
                                             <td class="py-2.5 px-4 text-[color:var(--ink-muted)]">{{ $member->contact_number ?: '—' }}</td>
                                             <td class="py-2.5 px-4 text-[color:var(--ink-muted)] email-cell">
-                                                @if ($member->email)
-                                                    <div class="flex items-center gap-2">
-                                                        <a href="mailto:{{ $member->email }}" class="hover:text-[color:var(--gold)] transition-colors break-all">
-                                                            {{ $member->email }}
-                                                        </a>
-                                                        <button type="button"
-                                                                onclick="navigator.clipboard.writeText('{{ $member->email }}'); this.textContent='✓'; setTimeout(()=>this.textContent='⧉', 1200);"
-                                                                class="copy-btn text-[10px] text-[color:var(--ink-muted)] hover:text-[color:var(--gold)] cursor-pointer shrink-0"
-                                                                title="Copy email">
-                                                            ⧉
-                                                        </button>
-                                                    </div>
-                                                @else
-                                                    —
-                                                @endif
-                                            </td>
-
-                                            <td class="py-2.5 px-4 text-right w-px">
-                                                @if ($isFirst)
-                                                    <span class="text-[10px] font-mono text-[color:var(--ink-muted)] bg-[rgba(242,185,12,0.08)] border border-[rgba(242,185,12,0.18)] rounded px-1.5 py-0.5 whitespace-nowrap">
-                                                        #{{ $entry->id }}
-                                                    </span>
-                                                @endif
-                                            </td>
+                                            @if ($member->email)
+                                                @php
+                                                    // Normalize Facebook URL — accept "facebook.com/x", "fb.com/x", "https://facebook.com/x", etc.
+                                                    $fbUrl = $member->email;
+                                                    if (!\Illuminate\Support\Str::startsWith($fbUrl, ['http://', 'https://'])) {
+                                                        $fbUrl = 'https://' . ltrim($fbUrl, '/');
+                                                    }
+                                                @endphp
+                                                <div class="flex items-center gap-2">
+                                                    <a href="{{ $fbUrl }}"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    class="hover:text-[color:var(--gold)] transition-colors break-all inline-flex items-center gap-1"
+                                                    title="Open Facebook profile">
+                                                        {{ $member->email }}
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                            class="shrink-0 opacity-60">
+                                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                                            <polyline points="15 3 21 3 21 9"/>
+                                                            <line x1="10" y1="14" x2="21" y2="3"/>
+                                                        </svg>
+                                                    </a>
+                                                    <button type="button"
+                                                            onclick="navigator.clipboard.writeText('{{ $member->email }}'); this.textContent='✓'; setTimeout(()=>this.textContent='⧉', 1200);"
+                                                            class="copy-btn text-[10px] text-[color:var(--ink-muted)] hover:text-[color:var(--gold)] cursor-pointer shrink-0"
+                                                            title="Copy link">
+                                                        ⧉
+                                                    </button>
+                                                </div>
+                                            @else
+                                                —
+                                            @endif
+                                        </td>
 
                                             <td class="py-2.5 px-4 text-right w-px">
                                                 @if ($isFirst)
@@ -364,8 +373,24 @@
                                                     <dt class="text-xs text-[color:var(--ink-muted)] uppercase tracking-wider">Facebook</dt>
                                                     <dd class="mt-0.5 break-all">
                                                         @if ($member->email)
-                                                            <a href="mailto:{{ $member->email }}" class="text-[color:var(--gold-soft)] hover:text-[color:var(--gold)] transition-colors">
+                                                            @php
+                                                                $fbUrl = $member->email;
+                                                                if (!\Illuminate\Support\Str::startsWith($fbUrl, ['http://', 'https://'])) {
+                                                                    $fbUrl = 'https://' . ltrim($fbUrl, '/');
+                                                                }
+                                                            @endphp
+                                                            <a href="{{ $fbUrl }}"
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            class="text-[color:var(--gold-soft)] hover:text-[color:var(--gold)] transition-colors inline-flex items-center gap-1.5">
                                                                 {{ $member->email }}
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                                    class="shrink-0 opacity-70">
+                                                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                                                    <polyline points="15 3 21 3 21 9"/>
+                                                                    <line x1="10" y1="14" x2="21" y2="3"/>
+                                                                </svg>
                                                             </a>
                                                         @else
                                                             —
