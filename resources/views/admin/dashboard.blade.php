@@ -17,6 +17,8 @@
             --gold-soft: #C99A1E;
             --ink: #F4F1E8;
             --ink-muted: #B9B4A6;
+            --border: rgba(242, 185, 12, 0.14);
+            --border-strong: rgba(242, 185, 12, 0.25);
         }
         body { background: var(--bg); color: var(--ink); font-family: 'Inter', sans-serif; }
         .display { font-family: 'Anton', sans-serif; letter-spacing: 0.01em; }
@@ -49,6 +51,11 @@
         .entry-row { transition: background-color 0.15s ease; }
         .entry-row:hover { background-color: rgba(242,185,12,0.04); }
 
+        /* Entry grouping — the LAST row of each entry gets a stronger border */
+        .entry-row.entry-last {
+            border-bottom: 2px solid rgba(242, 185, 12, 0.28) !important;
+        }
+
         /* Delete button reveal */
         .delete-btn { transition: color 0.15s ease, background-color 0.15s ease, transform 0.1s ease; }
         .delete-btn:hover { transform: scale(1.08); }
@@ -57,6 +64,38 @@
         /* Email copy button reveal */
         .copy-btn { opacity: 0; transition: opacity 0.15s ease; }
         .email-cell:hover .copy-btn { opacity: 1; }
+
+        /* Custom checkbox */
+        .member-checkbox {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 1.5px solid var(--border-strong);
+            background: var(--bg-panel);
+            cursor: pointer;
+            position: relative;
+            transition: border-color 0.15s ease, background-color 0.15s ease;
+            flex-shrink: 0;
+        }
+        .member-checkbox:hover {
+            border-color: var(--gold);
+        }
+        .member-checkbox:checked {
+            background: var(--gold);
+            border-color: var(--gold);
+        }
+        .member-checkbox:checked::after {
+            content: '';
+            position: absolute;
+            top: 1px;
+            left: 4.5px;
+            width: 5px;
+            height: 9px;
+            border: solid #000;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -64,7 +103,6 @@
     <!-- ===== HEADER ===== -->
     <header class="sticky top-0 z-40 bg-dragon-bg/95 backdrop-blur-sm border-b border-dragon-gold/15">
         <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between gap-4">
-            <!-- Logo + admin badge -->
             <div class="flex items-center gap-4 min-w-0">
                 <a href="{{ route('home') }}" class="flex items-center gap-3 group shrink-0">
                     <img src="{{ asset('assets/navbar-logo.png') }}"
@@ -80,7 +118,6 @@
                 </span>
             </div>
 
-            <!-- Logout button (enhanced) -->
             <form method="POST" action="{{ route('logout') }}" class="shrink-0">
                 @csrf
                 <button type="submit"
@@ -227,11 +264,12 @@
                         <table class="w-full text-sm">
                             <thead>
                                 <tr class="text-left text-xs uppercase tracking-wider text-[color:var(--ink-muted)] border-b border-[rgba(242,185,12,0.14)]">
+                                    {{-- Checkbox column — no "select all" in header anymore --}}
+                                    <th class="py-3 px-3 font-medium w-px"></th>
                                     <th class="py-3 px-5 font-medium">Name</th>
                                     <th class="py-3 px-4 font-medium">Stud ID</th>
                                     <th class="py-3 px-4 font-medium">Gender</th>
                                     <th class="py-3 px-4 font-medium">Program</th>
-                                    {{-- <th class="py-3 px-4 font-medium">Year</th> --}}
                                     <th class="py-3 px-4 font-medium">Contact</th>
                                     <th class="py-3 px-4 font-medium">Facebook</th>
                                     <th class="py-3 px-4 font-medium text-right w-px"></th>
@@ -239,79 +277,83 @@
                             </thead>
                             <tbody>
                                 @foreach ($categoryEntries as $entry)
-                                    @foreach ($entry->members as $memberIndex => $member)
-                                        @php $isFirst = $memberIndex === 0; $isLast = $memberIndex === $entry->members->count() - 1; @endphp
-                                        <tr class="entry-row border-b border-[rgba(242,185,12,0.06)] {{ $isLast ? 'border-b-2 border-[rgba(242,185,12,0.18)]' : '' }}">
-                                            <td class="py-2.5 px-5 font-medium">
-                                                <div class="flex items-center gap-2">
-                                                    @if (!$isFirst)
-                                                        <span class="text-[color:var(--ink-muted)]/40 text-xs" aria-hidden="true">↳</span>
-                                                    @endif
-                                                    {{ $member->full_name }}
-                                                </div>
+                                    @php $member = $entry->members->first(); @endphp
+                                    @if ($member)
+                                        <tr class="entry-row border-b border-[rgba(242,185,12,0.06)] last:border-0">
+                                            {{-- Checkbox --}}
+                                            <td class="py-2.5 px-3 w-px">
+                                                <input type="checkbox"
+                                                    class="member-checkbox"
+                                                    value="{{ $member->id }}"
+                                                    aria-label="Select {{ $member->full_name }}">
                                             </td>
+
+                                            {{-- Name --}}
+                                            <td class="py-2.5 px-5 font-medium">
+                                                {{ $member->full_name }}
+                                            </td>
+
                                             <td class="py-2.5 px-4 text-[color:var(--ink-muted)]">{{ $member->student_number }}</td>
                                             <td class="py-2.5 px-4 text-[color:var(--ink-muted)]">{{ $member->gender }}</td>
                                             <td class="py-2.5 px-4 text-[color:var(--ink-muted)]">{{ $member->program }}</td>
-                                            {{-- <td class="py-2.5 px-4 text-[color:var(--ink-muted)]">{{ $member->year_level }}</td> --}}
                                             <td class="py-2.5 px-4 text-[color:var(--ink-muted)]">{{ $member->contact_number ?: '—' }}</td>
-                                            <td class="py-2.5 px-4 text-[color:var(--ink-muted)] email-cell">
-                                            @if ($member->email)
-                                                @php
-                                                    // Normalize Facebook URL — accept "facebook.com/x", "fb.com/x", "https://facebook.com/x", etc.
-                                                    $fbUrl = $member->email;
-                                                    if (!\Illuminate\Support\Str::startsWith($fbUrl, ['http://', 'https://'])) {
-                                                        $fbUrl = 'https://' . ltrim($fbUrl, '/');
-                                                    }
-                                                @endphp
-                                                <div class="flex items-center gap-2">
-                                                    <a href="{{ $fbUrl }}"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    class="hover:text-[color:var(--gold)] transition-colors break-all inline-flex items-center gap-1"
-                                                    title="Open Facebook profile">
-                                                        {{ $member->email }}
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                            class="shrink-0 opacity-60">
-                                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                                                            <polyline points="15 3 21 3 21 9"/>
-                                                            <line x1="10" y1="14" x2="21" y2="3"/>
-                                                        </svg>
-                                                    </a>
-                                                    <button type="button"
-                                                            onclick="navigator.clipboard.writeText('{{ $member->email }}'); this.textContent='✓'; setTimeout(()=>this.textContent='⧉', 1200);"
-                                                            class="copy-btn text-[10px] text-[color:var(--ink-muted)] hover:text-[color:var(--gold)] cursor-pointer shrink-0"
-                                                            title="Copy link">
-                                                        ⧉
-                                                    </button>
-                                                </div>
-                                            @else
-                                                —
-                                            @endif
-                                        </td>
 
-                                            <td class="py-2.5 px-4 text-right w-px">
-                                                @if ($isFirst)
-                                                    <form method="POST"
-                                                        action="{{ route('admin.entries.destroy', $entry) }}"
-                                                        onsubmit="return confirm('Delete Entry #{{ $entry->id }} ({{ $entry->category->name }})? This cannot be undone.');"
-                                                        class="inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit"
-                                                                class="delete-btn cursor-pointer text-[color:var(--ink-muted)] hover:text-red-400 p-1.5 rounded hover:bg-red-500/10"
-                                                                title="Delete entry">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+                                            {{-- Facebook --}}
+                                            <td class="py-2.5 px-4 text-[color:var(--ink-muted)] email-cell">
+                                                @if ($member->email)
+                                                    @php
+                                                        $fbUrl = $member->email;
+                                                        if (!\Illuminate\Support\Str::startsWith($fbUrl, ['http://', 'https://'])) {
+                                                            $fbUrl = 'https://' . ltrim($fbUrl, '/');
+                                                        }
+                                                    @endphp
+                                                    <div class="flex items-center gap-2">
+                                                        <a href="{{ $fbUrl }}"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        class="hover:text-[color:var(--gold)] transition-colors break-all inline-flex items-center gap-1"
+                                                        title="Open Facebook profile">
+                                                            {{ $member->email }}
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                                class="shrink-0 opacity-60">
+                                                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                                                <polyline points="15 3 21 3 21 9"/>
+                                                                <line x1="10" y1="14" x2="21" y2="3"/>
                                                             </svg>
+                                                        </a>
+                                                        <button type="button"
+                                                                onclick="navigator.clipboard.writeText('{{ $member->email }}'); this.textContent='✓'; setTimeout(()=>this.textContent='⧉', 1200);"
+                                                                class="copy-btn text-[10px] text-[color:var(--ink-muted)] hover:text-[color:var(--gold)] cursor-pointer shrink-0"
+                                                                title="Copy link">
+                                                            ⧉
                                                         </button>
-                                                    </form>
+                                                    </div>
+                                                @else
+                                                    —
                                                 @endif
                                             </td>
+
+                                            {{-- Delete — always shown now --}}
+                                            <td class="py-2.5 px-4 text-right w-px">
+                                                <form method="POST"
+                                                    action="{{ route('admin.entries.destroy', $entry) }}"
+                                                    onsubmit="return confirm('Delete {{ $member->full_name }} ({{ $entry->category->name }})? This cannot be undone.');"
+                                                    class="inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                            class="delete-btn cursor-pointer text-[color:var(--ink-muted)] hover:text-red-400 p-1.5 rounded hover:bg-red-500/10"
+                                                            title="Delete entry">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            </td>
                                         </tr>
-                                    @endforeach
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -320,88 +362,88 @@
                     <!-- ===== ENTRIES CARDS (mobile) ===== -->
                     <div class="sm:hidden space-y-3">
                         @foreach ($categoryEntries as $entry)
-                            <div class="rounded-xl overflow-hidden" style="background: var(--bg-panel); border: 1px solid rgba(242,185,12,0.14);">
-                                <div class="px-4 py-2.5 border-b border-[rgba(242,185,12,0.1)] flex items-center justify-between gap-2 text-xs text-[color:var(--ink-muted)]">
-                                    <span class="font-mono">Entry #{{ $entry->id }}</span>
-                                    <div class="flex items-center gap-2">
-                                        <span>{{ $entry->created_at->format('M d, Y g:i A') }}</span>
-                                        <form method="POST"
-                                            action="{{ route('admin.entries.destroy', $entry) }}"
-                                            onsubmit="return confirm('Delete Entry #{{ $entry->id }} ({{ $entry->category->name }})? This cannot be undone.');"
-                                            class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
-                                                    class="delete-btn cursor-pointer text-[color:var(--ink-muted)] hover:text-red-400 p-1.5 rounded hover:bg-red-500/10"
-                                                    title="Delete entry">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                    <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
-                                                </svg>
-                                            </button>
-                                        </form>
+                            @php $member = $entry->members->first(); @endphp
+                            @if ($member)
+                                <div class="rounded-xl overflow-hidden" style="background: var(--bg-panel); border: 1px solid rgba(242,185,12,0.14);">
+                                    <div class="px-4 py-2.5 border-b border-[rgba(242,185,12,0.1)] flex items-center justify-between gap-2 text-xs text-[color:var(--ink-muted)]">
+                                        <span class="font-mono">Entry #{{ $entry->id }}</span>
+                                        <div class="flex items-center gap-2">
+                                            <span>{{ $entry->created_at->format('M d, Y g:i A') }}</span>
+                                            <form method="POST"
+                                                action="{{ route('admin.entries.destroy', $entry) }}"
+                                                onsubmit="return confirm('Delete {{ $member->full_name }} ({{ $entry->category->name }})? This cannot be undone.');"
+                                                class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                        class="delete-btn cursor-pointer text-[color:var(--ink-muted)] hover:text-red-400 p-1.5 rounded hover:bg-red-500/10"
+                                                        title="Delete entry">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="p-4 space-y-3">
+                                        <div class="flex items-start gap-3">
+                                            <input type="checkbox"
+                                                class="member-checkbox mt-1"
+                                                value="{{ $member->id }}"
+                                                aria-label="Select {{ $member->full_name }}">
+                                            <div class="min-w-0 flex-1">
+                                                <p class="font-semibold text-[15px] truncate">{{ $member->full_name }}</p>
+                                                <p class="text-xs text-[color:var(--ink-muted)] font-mono mt-0.5">{{ $member->student_number }}</p>
+                                            </div>
+                                            <span class="pill text-xs font-medium rounded-full px-2.5 py-1 shrink-0">{{ $member->gender }}</span>
+                                        </div>
+
+                                        <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                                            <div>
+                                                <dt class="text-xs text-[color:var(--ink-muted)] uppercase tracking-wider">Program</dt>
+                                                <dd class="mt-0.5">{{ $member->program }}</dd>
+                                            </div>
+                                            <div>
+                                                <dt class="text-xs text-[color:var(--ink-muted)] uppercase tracking-wider">Year</dt>
+                                                <dd class="mt-0.5">{{ $member->year_level }}</dd>
+                                            </div>
+                                            <div class="col-span-2">
+                                                <dt class="text-xs text-[color:var(--ink-muted)] uppercase tracking-wider">Contact</dt>
+                                                <dd class="mt-0.5">{{ $member->contact_number ?: '—' }}</dd>
+                                            </div>
+                                            <div class="col-span-2">
+                                                <dt class="text-xs text-[color:var(--ink-muted)] uppercase tracking-wider">Facebook</dt>
+                                                <dd class="mt-0.5 break-all">
+                                                    @if ($member->email)
+                                                        @php
+                                                            $fbUrl = $member->email;
+                                                            if (!\Illuminate\Support\Str::startsWith($fbUrl, ['http://', 'https://'])) {
+                                                                $fbUrl = 'https://' . ltrim($fbUrl, '/');
+                                                            }
+                                                        @endphp
+                                                        <a href="{{ $fbUrl }}"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        class="text-[color:var(--gold-soft)] hover:text-[color:var(--gold)] transition-colors inline-flex items-center gap-1.5">
+                                                            {{ $member->email }}
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                                class="shrink-0 opacity-70">
+                                                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                                                <polyline points="15 3 21 3 21 9"/>
+                                                                <line x1="10" y1="14" x2="21" y2="3"/>
+                                                            </svg>
+                                                        </a>
+                                                    @else
+                                                        —
+                                                    @endif
+                                                </dd>
+                                            </div>
+                                        </dl>
                                     </div>
                                 </div>
-                                <div class="divide-y divide-[rgba(242,185,12,0.08)]">
-                                    @foreach ($entry->members as $i => $member)
-                                        <div class="p-4 space-y-3">
-                                            <div class="flex items-start justify-between gap-3">
-                                                <div class="min-w-0">
-                                                    <p class="text-xs text-[color:var(--ink-muted)] uppercase tracking-wider mb-1">
-                                                        Member {{ $i + 1 }} of {{ $entry->members->count() }}
-                                                    </p>
-                                                    <p class="font-semibold text-[15px] truncate">{{ $member->full_name }}</p>
-                                                    <p class="text-xs text-[color:var(--ink-muted)] font-mono mt-0.5">{{ $member->student_number }}</p>
-                                                </div>
-                                                <span class="pill text-xs font-medium rounded-full px-2.5 py-1 shrink-0">{{ $member->gender }}</span>
-                                            </div>
-
-                                            <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                                                <div>
-                                                    <dt class="text-xs text-[color:var(--ink-muted)] uppercase tracking-wider">Program</dt>
-                                                    <dd class="mt-0.5">{{ $member->program }}</dd>
-                                                </div>
-                                                <div>
-                                                    <dt class="text-xs text-[color:var(--ink-muted)] uppercase tracking-wider">Year</dt>
-                                                    <dd class="mt-0.5">{{ $member->year_level }}</dd>
-                                                </div>
-                                                <div class="col-span-2">
-                                                    <dt class="text-xs text-[color:var(--ink-muted)] uppercase tracking-wider">Contact</dt>
-                                                    <dd class="mt-0.5">{{ $member->contact_number ?: '—' }}</dd>
-                                                </div>
-                                                <div class="col-span-2">
-                                                    <dt class="text-xs text-[color:var(--ink-muted)] uppercase tracking-wider">Facebook</dt>
-                                                    <dd class="mt-0.5 break-all">
-                                                        @if ($member->email)
-                                                            @php
-                                                                $fbUrl = $member->email;
-                                                                if (!\Illuminate\Support\Str::startsWith($fbUrl, ['http://', 'https://'])) {
-                                                                    $fbUrl = 'https://' . ltrim($fbUrl, '/');
-                                                                }
-                                                            @endphp
-                                                            <a href="{{ $fbUrl }}"
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            class="text-[color:var(--gold-soft)] hover:text-[color:var(--gold)] transition-colors inline-flex items-center gap-1.5">
-                                                                {{ $member->email }}
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="shrink-0 opacity-70">
-                                                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                                                                    <polyline points="15 3 21 3 21 9"/>
-                                                                    <line x1="10" y1="14" x2="21" y2="3"/>
-                                                                </svg>
-                                                            </a>
-                                                        @else
-                                                            —
-                                                        @endif
-                                                    </dd>
-                                                </div>
-                                            </dl>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
+                            @endif
                         @endforeach
                     </div>
                 </section>
@@ -432,5 +474,124 @@
         @endif
     </div>
 
+    {{-- ===== FLOATING EXPORT BAR ===== --}}
+    <div id="exportBar"
+        class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 opacity-0 pointer-events-none transition-all duration-300">
+        <div class="rounded-2xl px-4 py-3 flex items-center gap-3 shadow-2xl"
+            style="background: var(--bg-panel); border: 1px solid var(--border-strong); box-shadow: 0 20px 60px -20px rgba(0,0,0,0.6);">
+
+            <div class="flex items-center gap-2 pr-3 border-r" style="border-color: var(--border);">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold"
+                    style="background: var(--gold); color: #000;" id="selectedCount">0</span>
+                <span class="text-sm font-medium hidden sm:inline" style="color: var(--ink);">
+                    selected
+                </span>
+            </div>
+
+            <button type="button" id="clearSelectionBtn"
+                    class="cursor-pointer text-xs font-medium px-3 py-2 rounded-md transition-colors"
+                    style="color: var(--ink-muted);">
+                Clear
+            </button>
+
+            <button type="button" id="exportPdfBtn"
+                    class="cursor-pointer inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-md text-black transition-all hover:scale-[1.02]"
+                    style="background: var(--gold);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Export PDF
+            </button>
+        </div>
+    </div>
+
+    {{-- ===== HIDDEN EXPORT FORM (outside the bar) ===== --}}
+    <form id="exportForm" method="POST" action="{{ route('admin.entries.export-pdf') }}" style="display: none;">
+        @csrf
+        <input type="hidden" name="filter_note" value="{{ collect(request()->only(['group','category_id','gender','program','search']))->filter()->map(fn($v, $k) => "$k: $v")->implode(' · ') }}">
+        <div id="exportIdsContainer"></div>
+    </form>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const exportBar    = document.getElementById('exportBar');
+        const exportBtn    = document.getElementById('exportPdfBtn');
+        const clearBtn     = document.getElementById('clearSelectionBtn');
+        const countEl      = document.getElementById('selectedCount');
+        const exportForm   = document.getElementById('exportForm');
+        const idsContainer = document.getElementById('exportIdsContainer');
+
+        if (!exportBar || !exportBtn || !exportForm) {
+            console.warn('Export bar elements not found');
+            return;
+        }
+
+        function updateBar() {
+            const checked = document.querySelectorAll('.member-checkbox:checked');
+            const count = checked.length;
+
+            countEl.textContent = count;
+
+            if (count > 0) {
+                exportBar.classList.remove('opacity-0', 'pointer-events-none');
+                exportBar.classList.add('opacity-100', 'pointer-events-auto');
+            } else {
+                exportBar.classList.add('opacity-0', 'pointer-events-none');
+                exportBar.classList.remove('opacity-100', 'pointer-events-auto');
+            }
+        }
+
+        // Listen for checkbox changes (delegated)
+        document.addEventListener('change', function (e) {
+            if (e.target && e.target.classList.contains('member-checkbox')) {
+                updateBar();
+            }
+        });
+
+        // Clear button
+        clearBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelectorAll('.member-checkbox').forEach(function (cb) {
+                cb.checked = false;
+            });
+            updateBar();
+        });
+
+        // Export button — build the form and submit
+        exportBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const checked = document.querySelectorAll('.member-checkbox:checked');
+            if (checked.length === 0) {
+                return;
+            }
+
+            // Clear previous inputs
+            idsContainer.innerHTML = '';
+
+            // Add fresh hidden inputs
+            checked.forEach(function (cb) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'member_ids[]';
+                input.value = cb.value;
+                idsContainer.appendChild(input);
+            });
+
+            // Log for debugging (remove after testing)
+            console.log('Submitting export with', checked.length, 'members');
+
+            // Submit the form programmatically
+            HTMLFormElement.prototype.submit.call(exportForm);
+        });
+
+        // Initial state
+        updateBar();
+    });
+    </script>
 </body>
 </html>

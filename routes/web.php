@@ -19,4 +19,5 @@ Route::post('/admin/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
     Route::delete('/entries/{entry}', [AdminController::class, 'destroy'])->name('entries.destroy');
+    Route::post('/entries/export-pdf', [AdminController::class, 'exportPdf'])->name('entries.export-pdf');
 });

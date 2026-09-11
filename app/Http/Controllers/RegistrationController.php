@@ -9,12 +9,10 @@ use Illuminate\Support\Facades\DB;
 
 class RegistrationController extends Controller
 {
-    // Adjust this list to match SLSU Sogod's actual offered programs
     public const PROGRAMS = [
         'BS Information Technology (BSIT)',
         'BS Hospitality Management (BSHM)',
         'BS Tourism Management (BSTM)',
-        'Other',
     ];
 
     public function create(Request $request)
@@ -45,27 +43,25 @@ class RegistrationController extends Controller
         $category = Category::findOrFail($request->input('category_id'));
 
         $validated = $request->validate([
-            'category_id' => 'required|exists:categories,id',
-            'members' => "required|array|min:{$category->min_members}|max:{$category->max_members}",
-            'members.*.full_name' => 'required|string|max:150',
+            'category_id'              => 'required|exists:categories,id',
+            'members'                  => "required|array|min:{$category->min_members}|max:{$category->max_members}",
+            'members.*.full_name'      => 'required|string|max:150',
             'members.*.student_number' => 'required|string|max:50',
-            'members.*.gender' => 'required|in:Male,Female',
-            'members.*.program' => 'required|string|max:150',
-            'members.*.year_level' => 'required|integer|between:1,4',
+            'members.*.gender'         => 'required|in:Male,Female',
+            'members.*.program'        => 'required|string|max:150',
+            'members.*.year_level'     => 'required|integer|between:1,4',
             'members.*.contact_number' => 'nullable|string|max:30',
-            'members.*.email' => 'nullable|max:150',
+            'members.*.email'          => 'nullable|max:150',
         ]);
 
-        $entry = DB::transaction(function () use ($validated, $category) {
-            $entry = Entry::create([
-                'category_id' => $category->id,
-            ]);
+        DB::transaction(function () use ($validated, $category) {
+            foreach ($validated['members'] as $memberData) {
+                $entry = Entry::create([
+                    'category_id' => $category->id,
+                ]);
 
-            foreach ($validated['members'] as $member) {
-                $entry->members()->create($member);
+                $entry->members()->create($memberData);
             }
-
-            return $entry;
         });
 
         return redirect()

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\RegistrationController;
@@ -41,7 +42,7 @@ class AdminController extends Controller
         }
 
         /** @var \Illuminate\Pagination\LengthAwarePaginator $paginator */
-        $paginator = $query->paginate(20);
+        $paginator = $query->paginate(50);
         $entries = $paginator->withQueryString();
 
         $categories = Category::where('is_open', true)
@@ -62,5 +63,28 @@ class AdminController extends Controller
         return redirect()
             ->route('admin.dashboard', request()->only(['group', 'category_id', 'gender', 'program', 'search', 'page']))
             ->with('success', "Entry #{$entry->id} has been deleted.");
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $request->validate([
+            'member_ids'   => ['required', 'array', 'min:1'],
+            'member_ids.*' => ['integer', 'exists:entry_members,id'],
+        ]);
+
+        $members = \App\Models\EntryMember::with('entry.category')
+            ->whereIn('id', $request->input('member_ids'))
+            ->get()
+            ->sortBy(fn ($m) => $m->entry->category->group . '|' . $m->entry->category->name . '|' . $m->full_name);
+
+        $pdf = Pdf::loadView('admin.exports.entries-pdf', [
+            'members'    => $members,
+            'generated'  => now(),
+            'filterNote' => $request->input('filter_note', 'Custom selection'),
+        ])->setPaper('a4', 'portrait');
+
+        $filename = 'herculean-dragon-entries-' . now()->format('Y-m-d-His') . '.pdf';
+
+        return $pdf->download($filename);
     }
 }
