@@ -37,13 +37,13 @@
 
       <a href="{{ route('register.create') }}"
          class="hidden sm:inline-block px-5 py-2 rounded-md font-semibold text-black transition-colors shadow-sm"
-         style="background: var(--gold);">
+         style="background: var(--gold); color: var(--black);">
         Register
       </a>
 
       <a href="{{ route('register.create') }}"
          class="sm:hidden px-4 py-1.5 rounded-md text-black text-sm font-semibold transition-colors"
-         style="background: var(--gold);">
+         style="background: var(--gold); color: var(--black);">
         Register
       </a>
     </div>

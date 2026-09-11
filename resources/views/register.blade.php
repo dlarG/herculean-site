@@ -151,8 +151,8 @@
                     <input type="text" class="member-contact_number field w-full rounded px-3 py-2">
                 </div>
                 <div class="sm:col-span-2">
-                    <label class="block text-sm font-medium mb-1">Email</label>
-                    <input type="email" class="member-email field w-full rounded px-3 py-2">
+                    <label class="block text-sm font-medium mb-1">Facebook Account Link</label>
+                    <input type="text" class="member-email field w-full rounded px-3 py-2">
                 </div>
             </div>
         </div>

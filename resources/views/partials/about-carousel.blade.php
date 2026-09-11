@@ -1,43 +1,67 @@
-@php
-  $logos = [
-    ['src' => 'assets/logo.png',        'alt' => 'SLSU Intramurals'],
-    ['src' => 'assets/navbar-logo.png', 'alt' => 'SLSU Sogod'],
-    ['src' => 'assets/slsu-crop.png',   'alt' => 'Herculean Dragon'],
-    ['src' => 'assets/fp-removebg.png', 'alt' => 'Team Phoenix'],
-    ['src' => 'assets/gg-removebg.png', 'alt' => 'Team Griffin'],
-    ['src' => 'assets/fs-removebg.png', 'alt' => 'Team Falcon'],
-  ];
-@endphp
+<section id="about" class="py-16 sm:py-20" style="border-bottom: 1px solid var(--border);">
+  <div class="max-w-6xl mx-auto px-5">
 
-<section id="about" class="py-12 overflow-hidden" style="border-bottom: 1px solid var(--border);">
-  <div class="max-w-6xl mx-auto px-5 mb-8">
-    <p class="text-center text-xs uppercase tracking-[0.3em] font-medium" style="color: var(--gold-soft);">
-      Proudly representing · Supported by
-    </p>
-  </div>
+    {{-- ===== 3-LOGO ROW ===== --}}
+    <div class="grid grid-cols-3 items-center gap-6 sm:gap-10 max-w-3xl mx-auto">
 
-  <div class="relative group">
-    <div class="pointer-events-none absolute inset-y-0 left-0 w-24 z-10"
-         style="background: linear-gradient(to right, var(--bg), transparent);"></div>
-    <div class="pointer-events-none absolute inset-y-0 right-0 w-24 z-10"
-         style="background: linear-gradient(to left, var(--bg), transparent);"></div>
+      {{-- Left: Intramurals logo --}}
+      <div class="flex justify-center sm:justify-end">
+        <img src="{{ asset('assets/slsu-crop.png') }}"
+             alt="SLSU Intramurals"
+             class="h-16 sm:h-20 lg:h-24 w-auto object-contain transition-transform duration-300 hover:scale-105">
+      </div>
 
-    <div class="flex gap-12 animate-marquee group-hover:[animation-play-state:paused] w-max">
-      @foreach ($logos as $logo)
-        <div class="flex items-center justify-center h-20 w-40 shrink-0 opacity-70 hover:opacity-100 transition-opacity">
-          <img src="{{ asset($logo['src']) }}"
-               alt="{{ $logo['alt'] }}"
-               class="max-h-16 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300">
-        </div>
-      @endforeach
+      {{-- Center: SLSU logo (larger) --}}
+      <div class="flex justify-center">
+        <img src="{{ asset('assets/navbar-logo.png') }}"
+             alt="SLSU Sogod"
+             class="h-20 sm:h-28 lg:h-32 w-auto object-contain transition-transform duration-300 hover:scale-105">
+      </div>
 
-      @foreach ($logos as $logo)
-        <div class="flex items-center justify-center h-20 w-40 shrink-0 opacity-70 hover:opacity-100 transition-opacity" aria-hidden="true">
-          <img src="{{ asset($logo['src']) }}"
-               alt=""
-               class="max-h-16 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300">
-        </div>
-      @endforeach
+      {{-- Right: Herculean Dragon logo --}}
+      <div class="flex justify-center sm:justify-start">
+        <img src="{{ asset('assets/logo.png') }}"
+             alt="Herculean Dragon"
+             class="h-16 sm:h-20 lg:h-24 w-auto object-contain transition-transform duration-300 hover:scale-105">
+      </div>
+
     </div>
+
+    {{-- ===== ABOUT TEXT ===== --}}
+    <div class="max-w-3xl mx-auto mt-12 sm:mt-16 text-center">
+
+      {{-- Eyebrow --}}
+      <p class="text-xs uppercase tracking-[0.3em] font-semibold mb-4 flex items-center justify-center gap-3"
+         style="color: var(--gold-soft);">
+        <span class="inline-block w-8 h-px" style="background: var(--gold-soft);"></span>
+        About the Intramurals
+        <span class="inline-block w-8 h-px" style="background: var(--gold-soft);"></span>
+      </p>
+
+      {{-- Heading --}}
+      <h2 class="font-display text-2xl sm:text-3xl lg:text-4xl leading-tight mb-6"
+          style="color: var(--ink);">
+        Where <span style="color: var(--gold);">sports</span>,
+        <span style="color: var(--gold);">arts</span>, and
+        <span style="color: var(--gold);">school spirit</span> collide
+      </h2>
+
+      {{-- Body --}}
+      <p class="text-sm sm:text-base leading-relaxed mb-4" style="color: var(--ink-muted);">
+        The SLSU Sogod Intramurals is the university's annual celebration of athleticism, creativity, and camaraderie bringing together students from every department and year level to compete, perform, and represent their teams.
+      </p>
+
+      <p class="text-sm sm:text-base leading-relaxed" style="color: var(--ink-muted);">
+        This year, <span style="color: var(--gold); font-weight: 600;">Team Herculean Dragon</span> fields student-athletes and artists from the <span style="color: var(--gold); font-weight: 600;">HTM</span> and <span style="color: var(--gold); font-weight: 600;">Information Technology</span> departments united under one banner, one form, and one goal: victory.
+      </p>
+
+      <div class="mt-8">
+        <a href="#categories"
+           class="inline-block px-6 py-3 rounded-md font-semibold transition-colors"
+           style="background: var(--gold); color: var(--black);">
+          Explore Categories
+        </a>
+    </div>
+
   </div>
 </section>

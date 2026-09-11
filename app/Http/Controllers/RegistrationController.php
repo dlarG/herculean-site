@@ -53,7 +53,7 @@ class RegistrationController extends Controller
             'members.*.program' => 'required|string|max:150',
             'members.*.year_level' => 'required|integer|between:1,4',
             'members.*.contact_number' => 'nullable|string|max:30',
-            'members.*.email' => 'nullable|email|max:150',
+            'members.*.email' => 'nullable|max:150',
         ]);
 
         $entry = DB::transaction(function () use ($validated, $category) {
@@ -70,6 +70,6 @@ class RegistrationController extends Controller
 
         return redirect()
             ->route('register.create')
-            ->with('success', "Registered for {$category->name}.");
+            ->with('success', "Thank you for registering. Registered for {$category->name}. Please wait for a message from your coach for further instructions. Please keep your messenger and lines open.");
     }
 }

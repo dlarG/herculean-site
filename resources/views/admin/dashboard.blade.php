@@ -232,7 +232,7 @@
                                     <th class="py-3 px-4 font-medium">Program</th>
                                     <th class="py-3 px-4 font-medium">Year</th>
                                     <th class="py-3 px-4 font-medium">Contact</th>
-                                    <th class="py-3 px-4 font-medium">Email</th>
+                                    <th class="py-3 px-4 font-medium">Facebook</th>
                                     <th class="py-3 px-4 font-medium text-right w-px">Entry</th>
                                     <th class="py-3 px-4 font-medium text-right w-px"></th>
                                 </tr>
@@ -360,7 +360,7 @@
                                                     <dd class="mt-0.5">{{ $member->contact_number ?: '—' }}</dd>
                                                 </div>
                                                 <div class="col-span-2">
-                                                    <dt class="text-xs text-[color:var(--ink-muted)] uppercase tracking-wider">Email</dt>
+                                                    <dt class="text-xs text-[color:var(--ink-muted)] uppercase tracking-wider">Facebook</dt>
                                                     <dd class="mt-0.5 break-all">
                                                         @if ($member->email)
                                                             <a href="mailto:{{ $member->email }}" class="text-[color:var(--gold-soft)] hover:text-[color:var(--gold)] transition-colors">
