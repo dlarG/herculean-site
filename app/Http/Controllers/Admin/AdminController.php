@@ -46,7 +46,8 @@ class AdminController extends Controller
         $entries = $paginator->withQueryString();
 
         $categories = Category::where('is_open', true)
-            ->orderBy('group')->orderBy('name')
+            ->orderBy('group')
+            ->orderBy('name')
             ->get();
 
         $groups = $categories->pluck('group')->unique()->values();

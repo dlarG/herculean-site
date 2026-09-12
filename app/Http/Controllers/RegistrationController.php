@@ -17,25 +17,56 @@ class RegistrationController extends Controller
 
     public function create(Request $request)
     {
+        // Group of parent categories for the FIRST dropdown
         $categories = Category::where('is_open', true)
+            ->whereNull('parent_id')
             ->orderBy('group')
+            ->orderBy('sort_order')
             ->orderBy('name')
             ->get()
             ->groupBy('group');
 
+        // All variants keyed by their parent's ID, for the SECOND dropdown
+        $variantsByParent = Category::where('is_open', true)
+            ->whereNotNull('parent_id')
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get()
+            ->groupBy('parent_id');
+
         $sport = $request->query('sport');
         $preselectedId = null;
+        $preselectedVariantId = null;
 
         if ($sport) {
-            $preselectedId = Category::where('is_open', true)
+            // Find the category by name — could be a parent or a variant
+            $match = Category::where('is_open', true)
                 ->where('name', $sport)
-                ->orderBy('gender_division')
-                ->value('id');
+                ->first();
+
+            if ($match) {
+                if ($match->parent_id) {
+                    // It's a variant — preselect the parent AND the variant
+                    $preselectedId = $match->parent_id;
+                    $preselectedVariantId = $match->id;
+                } else {
+                    // It's a parent
+                    $preselectedId = $match->id;
+                }
+            }
         }
 
         $programs = self::PROGRAMS;
+        $allCategoriesById = Category::where('is_open', true)->get()->keyBy('id');
 
-        return view('register', compact('categories', 'preselectedId', 'programs'));
+        return view('register', compact(
+            'categories',
+            'variantsByParent',
+            'preselectedId',
+            'preselectedVariantId',
+            'programs',
+            'allCategoriesById'
+        ));
     }
 
     public function store(Request $request)

@@ -68,7 +68,11 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* Sticky submit bar on mobile */
+    /* Smooth reveal for the variant dropdown */
+    #variantWrapper {
+      animation: fadeIn 0.25s ease;
+    }
+
     @media (max-width: 1023px) {
       .mobile-submit-bar {
         position: sticky;
@@ -110,12 +114,11 @@
   <!-- ===== MAIN ===== -->
   <main class="max-w-6xl mx-auto px-5 py-10 sm:py-14">
 
-    <!-- Page title -->
     <div class="mb-10">
       <p class="text-xs sm:text-sm uppercase tracking-[0.25em] font-semibold mb-3 flex items-center gap-3"
          style="color: var(--gold-soft);">
         <span class="inline-block w-8 h-px" style="background: var(--gold-soft);"></span>
-        SLSU Sogod · HTM &amp; IT Department
+        SLSU Sogod · FHTM &amp; FCIS Department
       </p>
       <h1 class="font-display text-4xl sm:text-5xl leading-tight" style="color: var(--gold);">
         REGISTER
@@ -125,7 +128,6 @@
       </p>
     </div>
 
-    <!-- Success alert -->
     @if (session('success'))
       <div class="mb-8 rounded-xl px-5 py-4 text-sm flex items-start gap-3"
            style="background: rgba(63,122,74,0.12); border: 1px solid #3f7a4a; color: #9fe0ab;">
@@ -137,7 +139,6 @@
       </div>
     @endif
 
-    <!-- Error alert -->
     @if ($errors->any())
       <div class="mb-8 rounded-xl px-5 py-4 text-sm"
            style="background: rgba(160,59,59,0.12); border: 1px solid #a03b3b; color: #f2a5a5;">
@@ -158,10 +159,9 @@
       </div>
     @endif
 
-    <!-- Two-column layout -->
     <div class="grid lg:grid-cols-3 gap-8">
 
-      <!-- ===== LEFT: FORM (2/3 width on desktop) ===== -->
+      <!-- ===== LEFT: FORM ===== -->
       <div class="lg:col-span-2">
         <form method="POST" action="{{ route('register.store') }}" id="regForm" class="space-y-8">
           @csrf
@@ -174,6 +174,7 @@
               <h2 class="font-display text-xl tracking-wide" style="color: var(--ink);">Choose a category</h2>
             </div>
 
+            <!-- Parent category -->
             <div>
               <label class="block text-sm font-medium mb-2" for="category_id" style="color: var(--ink-muted);">
                 Which sport or art category are you registering for?
@@ -183,12 +184,32 @@
                 @foreach ($categories as $group => $items)
                   <optgroup label="{{ $group }}">
                     @foreach ($items as $item)
-                      <option value="{{ $item->id }}" @selected($preselectedId === $item->id)>
+                      <option
+                        value="{{ $item->id }}"
+                        data-has-variants="{{ $item->has_variants ? '1' : '0' }}"
+                        @selected($preselectedId === $item->id)>
                         {{ $item->name }}
                       </option>
                     @endforeach
                   </optgroup>
                 @endforeach
+              </select>
+            </div>
+
+            <!-- Variant dropdown (only shown when parent has variants) -->
+            <div id="variantWrapper" class="hidden mt-4">
+              <label class="block text-sm font-medium mb-2 flex items-center gap-2"
+                     for="variant_id" style="color: var(--ink-muted);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     style="color: var(--gold);">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+                Choose a specific event under <span id="variantParentName" style="color: var(--gold);"></span>
+              </label>
+              <select id="variant_id" class="field w-full rounded-lg px-4 py-3">
+                <option value="">Select a variant…</option>
+                {{-- Populated by JS --}}
               </select>
             </div>
           </section>
@@ -204,30 +225,28 @@
               <span id="memberHint" class="text-xs font-medium pill px-3 py-1 rounded-full whitespace-nowrap"></span>
             </div>
 
-            <!-- Empty state (before picking a category) -->
+            <!-- Empty state -->
             <div id="emptyState"
-                 class="rounded-xl p-8 text-center"
-                 style="background: var(--bg-panel-soft); border: 1px dashed var(--border-strong);">
+                class="rounded-xl p-8 text-center"
+                style="background: var(--bg-panel-soft); border: 1px dashed var(--border-strong);">
               <div class="flex justify-center mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                     style="color: var(--gold-soft);">
+                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                    style="color: var(--gold-soft);">
                   <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
                   <circle cx="8.5" cy="7" r="4"/>
                   <line x1="20" y1="8" x2="20" y2="14"/>
                   <line x1="23" y1="11" x2="17" y2="11"/>
                 </svg>
               </div>
-              <p class="text-sm font-medium mb-1" style="color: var(--ink);">No category selected yet</p>
-              <p class="text-xs" style="color: var(--ink-muted);">
+              <p id="emptyStateTitle" class="text-sm font-medium mb-1" style="color: var(--ink);">No category selected yet</p>
+              <p class="text-xs" style="color: var(--ink-muted);" id="emptyStateHint">
                 Pick a category above and the member form will appear here.
               </p>
             </div>
 
-            <!-- Members list -->
             <div id="membersContainer" class="space-y-4 hidden"></div>
 
-            <!-- Add member button -->
             <button type="button" id="addMemberBtn"
                     class="hidden mt-4 w-full text-sm font-medium rounded-lg px-4 py-3 border border-dashed transition-colors hover:bg-[color:var(--bg-panel-soft)]"
                     style="border-color: var(--border-strong); color: var(--gold);">
@@ -235,7 +254,7 @@
             </button>
           </section>
 
-          <!-- ===== STEP 3: Submit (desktop) ===== -->
+          <!-- ===== STEP 3: Submit ===== -->
           <section class="hidden lg:block">
             <div class="flex items-center gap-3 mb-4">
               <span class="flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold"
@@ -254,15 +273,12 @@
         </form>
       </div>
 
-      <!-- ===== RIGHT: HELP PANEL (1/3 width on desktop) ===== -->
+      <!-- ===== RIGHT: HELP PANEL ===== -->
       <aside class="lg:col-span-1">
         <div class="lg:sticky lg:top-24 space-y-5">
-
-          <!-- Info card -->
           <div class="rounded-2xl p-6" style="background: var(--bg-panel); border: 1px solid var(--border);">
             <h3 class="font-display text-lg mb-4" style="color: var(--gold);">Before you register</h3>
             <ul class="space-y-3 text-sm" style="color: var(--ink-muted);">
-
               <li class="flex gap-3">
                 <span style="color: var(--gold);">✓</span>
                 <span>All members must be enrolled SLSU Sogod students.</span>
@@ -278,7 +294,6 @@
             </ul>
           </div>
 
-          <!-- Contact card -->
           <div class="rounded-2xl p-6" style="background: var(--bg-panel); border: 1px solid var(--border);">
             <h3 class="font-display text-lg mb-3" style="color: var(--gold);">Need help?</h3>
             <p class="text-sm mb-4" style="color: var(--ink-muted);">
@@ -310,8 +325,6 @@
   <!-- ===== MEMBER FIELD TEMPLATE ===== -->
   <template id="memberFieldTemplate">
     <div class="member-row rounded-xl p-5 relative">
-
-      <!-- Member header -->
       <div class="flex items-center justify-between mb-4 pb-3" style="border-bottom: 1px solid var(--border);">
         <div class="flex items-center gap-2.5">
           <span class="member-number flex items-center justify-center w-6 h-6 rounded-full text-[11px] font-bold"
@@ -325,7 +338,6 @@
         </button>
       </div>
 
-      <!-- Fields grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="sm:col-span-2">
           <label class="block text-xs font-medium mb-1.5" style="color: var(--ink-muted);">Full name</label>
@@ -384,18 +396,30 @@
   </template>
 
   <script>
-    const categories = @json($categories->flatten()->keyBy('id'));
-    const preselectedId = @json($preselectedId);
+    // ── Blade data ─────────────────────────────────────────────
+    const categories          = @json($categories->flatten()->keyBy('id'));
+    const variantsByParent    = @json($variantsByParent);
+    const preselectedId       = @json($preselectedId);
+    const allCategoriesById = @json($allCategoriesById);
+    const preselectedVariantId = @json($preselectedVariantId);
+    const emptyStateTitle  = document.getElementById('emptyStateTitle');
+    // ── DOM refs ───────────────────────────────────────────────
     const membersContainer = document.getElementById('membersContainer');
-    const addMemberBtn = document.getElementById('addMemberBtn');
-    const memberHint = document.getElementById('memberHint');
-    const categorySelect = document.getElementById('category_id');
-    const template = document.getElementById('memberFieldTemplate');
-    const form = document.getElementById('regForm');
-    const emptyState = document.getElementById('emptyState');
+    const addMemberBtn     = document.getElementById('addMemberBtn');
+    const memberHint       = document.getElementById('memberHint');
+    const categorySelect   = document.getElementById('category_id');
+    const variantWrapper   = document.getElementById('variantWrapper');
+    const variantSelect    = document.getElementById('variant_id');
+    const variantParentName = document.getElementById('variantParentName');
+    const emptyStateHint   = document.getElementById('emptyStateHint');
+    const template         = document.getElementById('memberFieldTemplate');
+    const form             = document.getElementById('regForm');
+    const emptyState       = document.getElementById('emptyState');
 
     let currentMax = 1;
+    let currentCategoryId = null;
 
+    // ── Member rows ────────────────────────────────────────────
     function addMemberRow() {
       if (membersContainer.children.length >= currentMax) return;
 
@@ -431,11 +455,48 @@
       addMemberBtn.classList.toggle('hidden', rows.length >= currentMax);
     }
 
-    function loadCategory(catId) {
-      const cat = categories[catId];
+    // ── Variant handling ───────────────────────────────────────
+    function getVariantsFor(parentId) {
+      const list = variantsByParent[parentId];
+      return Array.isArray(list) ? list : [];
+    }
+
+    function renderVariantDropdown(parentId) {
+      const parentCat = categories[parentId];
+      const variants = getVariantsFor(parentId);
+
+      if (!parentCat || variants.length === 0) {
+        variantWrapper.classList.add('hidden');
+        variantSelect.innerHTML = '<option value="">Select a variant…</option>';
+        return;
+      }
+
+      // Show the wrapper and label
+      variantParentName.textContent = parentCat.name;
+      variantWrapper.classList.remove('hidden');
+
+      // Populate options
+      variantSelect.innerHTML = '<option value="">Select a variant…</option>';
+      variants.forEach((v) => {
+        const opt = document.createElement('option');
+        opt.value = v.id;
+        opt.textContent = v.name;
+        // Preselect if this variant was preselected
+        if (preselectedVariantId && Number(v.id) === Number(preselectedVariantId)) {
+          opt.selected = true;
+        }
+        variantSelect.appendChild(opt);
+      });
+    }
+
+    // ── Category selection ─────────────────────────────────────
+    function loadCategoryFromId(catId) {
+      // catId is the FINAL category (variant if a variant is chosen, else parent)
+      const cat = allCategoriesById[catId];
+      currentCategoryId = catId;
+
       membersContainer.innerHTML = '';
 
-      // Show empty state if no category selected
       if (!cat) {
         emptyState.classList.remove('hidden');
         membersContainer.classList.add('hidden');
@@ -444,11 +505,10 @@
         return;
       }
 
-      // Hide empty state, show form
       emptyState.classList.add('hidden');
       membersContainer.classList.remove('hidden');
 
-      currentMax = cat.max_members;
+      currentMax = cat.max_members || 1;
 
       memberHint.textContent = cat.min_members === cat.max_members
         ? `${cat.max_members} ${cat.max_members === 1 ? 'member' : 'members'}`
@@ -457,17 +517,97 @@
       addMemberRow();
     }
 
-    categorySelect.addEventListener('change', () => loadCategory(categorySelect.value));
-    addMemberBtn.addEventListener('click', addMemberRow);
+    function handleParentChange(parentId) {
+      // Reset member form first
+      membersContainer.innerHTML = '';
+      emptyState.classList.remove('hidden');
+      membersContainer.classList.add('hidden');
+      addMemberBtn.classList.add('hidden');
+      memberHint.textContent = '';
 
-    // Load preselected category (or hide form)
-    if (preselectedId) {
-      loadCategory(preselectedId);
+      if (!parentId) {
+        variantWrapper.classList.add('hidden');
+        variantSelect.innerHTML = '<option value="">Select a variant…</option>';
+        emptyStateTitle.textContent = 'No category selected yet';
+        emptyStateHint.textContent = 'Pick a category above and the member form will appear here.';
+        return;
+      }
+
+      const parentCat = categories[parentId];
+      const variants = getVariantsFor(parentId);
+
+      if (parentCat && parentCat.has_variants && variants.length > 0) {
+        // Parent with variants — show variant dropdown, wait for user to pick
+        renderVariantDropdown(parentId);
+        emptyStateTitle.textContent = 'Now choose a specific event';
+        emptyStateHint.textContent = 'Pick from the "' + parentCat.name + '" dropdown above to continue.';
+      } else {
+        // Standalone category — no variants, load the member form directly
+        variantWrapper.classList.add('hidden');
+        variantSelect.innerHTML = '<option value="">Select a variant…</option>';
+        emptyStateTitle.textContent = 'No category selected yet';
+        emptyStateHint.textContent = 'Pick a category above and the member form will appear here.';
+        loadCategoryFromId(parentId);
+      }
     }
 
-    // Inject hidden inputs on submit
-    form.addEventListener('submit', () => {
-      // Remove any previously injected hidden inputs (in case of validation re-submit)
+    function handleVariantChange(variantId) {
+      if (!variantId) {
+        // Variant cleared — hide member form
+        membersContainer.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        membersContainer.classList.add('hidden');
+        addMemberBtn.classList.add('hidden');
+        memberHint.textContent = '';
+        emptyStateTitle.textContent = 'Now choose a specific event';
+        emptyStateHint.textContent = 'Pick from the dropdown above to continue.';
+        return;
+      }
+
+      // Load the variant's member form
+      emptyState.classList.add('hidden');
+      membersContainer.classList.remove('hidden');
+      loadCategoryFromId(variantId);
+    }
+
+    // ── Event wiring ───────────────────────────────────────────
+    categorySelect.addEventListener('change', () => {
+      handleParentChange(categorySelect.value);
+    });
+
+    variantSelect.addEventListener('change', () => {
+      handleVariantChange(variantSelect.value);
+    });
+
+    addMemberBtn.addEventListener('click', addMemberRow);
+
+    // ── Preselection on load ───────────────────────────────────
+    if (preselectedId) {
+      categorySelect.value = String(preselectedId);
+      handleParentChange(String(preselectedId));
+
+      // If a variant was also preselected, apply it and load members
+      if (preselectedVariantId) {
+        variantSelect.value = String(preselectedVariantId);
+        handleVariantChange(String(preselectedVariantId));
+      }
+    }
+
+    // ── Submit — inject hidden member inputs ───────────────────
+    form.addEventListener('submit', (e) => {
+      // Ensure the correct category_id is submitted
+      // If a variant is chosen, use the variant's ID
+      const parentId = categorySelect.value;
+      const variantId = variantSelect.value;
+      const hasVariantDropdownVisible = !variantWrapper.classList.contains('hidden');
+
+      if (hasVariantDropdownVisible && !variantId) {
+        e.preventDefault();
+        alert('Please choose a specific event from the dropdown.');
+        return;
+      }
+
+      // Clear previous injected inputs
       form.querySelectorAll('input[data-member-input]').forEach(el => el.remove());
 
       const rows = membersContainer.querySelectorAll('.member-row');
@@ -483,6 +623,18 @@
           form.appendChild(hidden);
         });
       });
+
+      // Override category_id with the variant if one is selected
+      if (hasVariantDropdownVisible && variantId) {
+        // Remove any existing category_id input (there may be one from the select)
+        form.querySelectorAll('input[name="category_id"]').forEach(el => el.remove());
+
+        const hiddenCat = document.createElement('input');
+        hiddenCat.type = 'hidden';
+        hiddenCat.name = 'category_id';
+        hiddenCat.value = variantId;
+        form.appendChild(hiddenCat);
+      }
     });
   </script>
 </body>
