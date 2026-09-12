@@ -244,3 +244,67 @@ button:focus-visible {
         transform: translateX(3px);
     }
 }
+/* ── FAQ accordion ─────────────────────────────────────── */
+.faq-item {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.faq-item:hover {
+    border-color: var(--border-strong);
+}
+
+.faq-item[open] {
+    border-color: var(--border-strong);
+    box-shadow: 0 8px 24px -16px rgba(242, 185, 12, 0.25);
+}
+
+.faq-item[open] .faq-summary {
+    padding-bottom: 0.5rem;
+}
+
+.faq-item[open] .faq-chevron {
+    transform: rotate(180deg);
+}
+
+/* Smooth open/close animation (modern browsers) */
+@supports (interpolate-size: allow-keywords) {
+    .faq-item::details-content {
+        transition: content-visibility 0.3s ease, opacity 0.3s ease;
+        opacity: 0;
+    }
+    .faq-item[open]::details-content {
+        opacity: 1;
+    }
+}
+
+/* Kill default marker in all browsers */
+.faq-summary::-webkit-details-marker {
+    display: none;
+}
+.faq-summary {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Mobile tweaks */
+@media (max-width: 640px) {
+    .faq-body {
+        font-size: 13.5px;
+    }
+}
+main::-webkit-scrollbar,
+.lg\:overflow-y-auto::-webkit-scrollbar {
+    width: 8px;
+}
+main::-webkit-scrollbar-track,
+.lg\:overflow-y-auto::-webkit-scrollbar-track {
+    background: transparent;
+}
+main::-webkit-scrollbar-thumb,
+.lg\:overflow-y-auto::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 4px;
+}
+main::-webkit-scrollbar-thumb:hover,
+.lg\:overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background: var(--gold-soft);
+}

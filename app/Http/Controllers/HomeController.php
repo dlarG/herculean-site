@@ -10,6 +10,7 @@ class HomeController extends Controller
     {
         $categories = Category::where('is_open', true)
             ->whereNull('parent_id')       // ← only parents
+            ->with('variants')
             ->orderBy('group')
             ->orderBy('sort_order')
             ->orderBy('name')

@@ -2,46 +2,28 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class Coach extends Authenticatable
 {
-    use HasFactory;
+    use Notifiable;
 
-    protected $fillable = [
-        'username',
-        'name',
-        'password',
-        'must_change_password',
-    ];
+    protected $fillable = ['username', 'name', 'password', 'must_change_password'];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
-    protected $casts = [
-        'must_change_password' => 'boolean',
-        'password'             => 'hashed', // Laravel 10+ auto-hashes on set
-    ];
+    protected $casts = ['must_change_password' => 'boolean', 'password' => 'hashed'];
 
-    /**
-     * Categories (events) this coach is assigned to.
-     */
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Category::class, 'coach_category')
-            ->withTimestamps();
+        return $this->belongsToMany(Category::class, 'coach_category')->withTimestamps();
     }
 
-    /**
-     * Announcements posted by this coach.
-     */
     public function announcements(): HasMany
     {
-        return $this->hasMany(Announcement::class)->latest();
+        return $this->hasMany(Announcement::class);
     }
 }

@@ -103,6 +103,30 @@ class RegistrationController extends Controller
                         "Student number {$member['student_number']} is already registered for {$category->name}.",
                 ]);
             }
+
+            // Eligibility rule: max 3 events per student, max 1 team event.
+            $existingCategories = EntryMember::where('student_number', $member['student_number'])
+                ->with('entry.category')
+                ->get()
+                ->pluck('entry.category')
+                ->filter();
+
+            $existingTotal = $existingCategories->count();
+            $existingTeamCount = $existingCategories->where('is_team_event', true)->count();
+
+            if ($existingTotal >= 3) {
+                throw ValidationException::withMessages([
+                    "members.$index.student_number" =>
+                        "Student number {$member['student_number']} is already registered for 3 events, the maximum allowed.",
+                ]);
+            }
+
+            if ($category->is_team_event && $existingTeamCount >= 1) {
+                throw ValidationException::withMessages([
+                    "members.$index.student_number" =>
+                        "Student number {$member['student_number']} is already registered for a team event. Only one team event is allowed per student (1 team + 2 individual, or 3 individual).",
+                ]);
+            }
         }
 
         DB::transaction(function () use ($validated, $category) {

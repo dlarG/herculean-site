@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <title>Student Login · Herculean Dragon</title>
+  <title>Coach Login · Herculean Dragon</title>
   <link rel="icon" type="image/png" href="{{ asset('assets/logo.png') }}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,21 +46,24 @@
     }
     .field::placeholder { color: var(--ink-muted); opacity: 0.6; }
 
+    /* Subtle gold glow behind the logo */
     .logo-glow {
       filter: drop-shadow(0 0 40px rgba(242, 185, 12, 0.25));
     }
 
+    /* Gradient border around the card */
     .auth-card {
       background: var(--bg-panel);
       border: 1px solid var(--border-strong);
       box-shadow: 0 30px 80px -40px rgba(0, 0, 0, 0.8);
-      animation: fadeUp 0.4s ease-out;
     }
 
+    /* Slight entrance animation */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+    .auth-card { animation: fadeUp 0.4s ease-out; }
   </style>
 </head>
 <body class="antialiased">
@@ -73,6 +76,9 @@
            alt="Herculean Dragon"
            class="h-9 w-auto object-contain transition-opacity group-hover:opacity-90"
            onerror="this.style.display='none';">
+      <span class="hidden sm:inline font-display text-sm tracking-wider" style="color: var(--gold);">
+        HERCULEAN DRAGON
+      </span>
     </a>
 
     <a href="{{ route('home') }}"
@@ -110,14 +116,12 @@
         <p class="text-xs uppercase tracking-[0.3em] font-semibold mb-3 flex items-center justify-center gap-3"
            style="color: var(--gold-soft);">
           <span class="inline-block w-6 h-px" style="background: var(--gold-soft);"></span>
-          Student Portal
+          Coach Portal
           <span class="inline-block w-6 h-px" style="background: var(--gold-soft);"></span>
         </p>
-        <h1 class="font-display text-4xl sm:text-5xl leading-tight" style="color: var(--gold);">
-          STUDENT LOGIN
-        </h1>
+
         <p class="mt-3 text-sm" style="color: var(--ink-muted);">
-          Sign in to view your registered events and coach announcements.
+          Sign in to manage your events, participants, and announcements.
         </p>
       </div>
 
@@ -137,43 +141,39 @@
 
       {{-- Login card --}}
       <div class="rounded-2xl p-6 sm:p-8 auth-card">
-        <form method="POST" action="{{ route('student.login.attempt') }}" class="space-y-5">
+        <form method="POST" action="{{ route('coach.login') }}" class="space-y-5">
           @csrf
 
-          {{-- Student number --}}
+          {{-- Username --}}
           <div>
-            <label for="student_number"
-                   class="block text-xs font-medium uppercase tracking-wider mb-2"
+            <label for="username" class="block text-xs font-medium uppercase tracking-wider mb-2"
                    style="color: var(--ink-muted);">
-              Student Number
+              Username
             </label>
             <div class="relative">
               <span class="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
                     style="color: var(--ink-muted);">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="4" width="18" height="16" rx="2"/>
-                  <circle cx="9" cy="10" r="2"/>
-                  <path d="M15 8h3M15 12h3M6 16h12"/>
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
                 </svg>
               </span>
               <input type="text"
-                     name="student_number"
-                     id="student_number"
+                     name="username"
+                     id="username"
                      required
                      autofocus
                      autocomplete="username"
-                     inputmode="numeric"
-                     placeholder="e.g. 2021-00123"
+                     placeholder="e.g. gsiega"
                      class="field w-full rounded-lg pl-11 pr-3.5 py-3 text-sm"
-                     value="{{ old('student_number') }}">
+                     value="{{ old('username') }}">
             </div>
           </div>
 
           {{-- Password --}}
           <div>
-            <label for="password"
-                   class="block text-xs font-medium uppercase tracking-wider mb-2"
+            <label for="password" class="block text-xs font-medium uppercase tracking-wider mb-2"
                    style="color: var(--ink-muted);">
               Password
             </label>
@@ -193,6 +193,7 @@
                      autocomplete="current-password"
                      placeholder="••••••••"
                      class="field w-full rounded-lg pl-11 pr-11 py-3 text-sm">
+              {{-- Show/hide toggle --}}
               <button type="button"
                       onclick="togglePassword(this)"
                       class="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer p-1.5 rounded transition-colors hover:text-[color:var(--gold)]"
@@ -212,15 +213,6 @@
             </div>
           </div>
 
-          {{-- First-time hint --}}
-          <div class="rounded-lg px-3.5 py-3 text-xs leading-relaxed flex gap-2.5"
-               style="background: var(--bg-panel-soft); border: 1px solid var(--border); color: var(--ink-muted);">
-            <span>
-              <strong style="color: var(--ink);">First time logging in?</strong>
-              Your password is your student number. You can change it after signing in.
-            </span>
-          </div>
-
           {{-- Remember me --}}
           <label class="flex items-center gap-2.5 text-sm cursor-pointer select-none"
                  style="color: var(--ink-muted);">
@@ -234,28 +226,32 @@
           <button type="submit"
                   class="w-full font-semibold rounded-lg px-4 py-3 text-black text-base transition-all hover:scale-[1.01] active:scale-[0.99]"
                   style="background: var(--gold); box-shadow: 0 14px 40px -12px rgba(242,185,12,0.5);">
-            Log in to Student Portal
+            Log in to Coach Portal
           </button>
         </form>
 
         {{-- Divider --}}
         <div class="flex items-center gap-3 my-6">
           <span class="h-px flex-1" style="background: var(--border);"></span>
-          <span class="text-xs uppercase tracking-wider" style="color: var(--ink-muted);">Not registered yet?</span>
+          <span class="text-xs uppercase tracking-wider" style="color: var(--ink-muted);">Need help?</span>
           <span class="h-px flex-1" style="background: var(--border);"></span>
         </div>
 
-        {{-- Register CTA --}}
-        <a href="{{ route('register.create') }}"
-           class="w-full inline-flex items-center justify-center gap-2 text-sm font-semibold rounded-lg px-4 py-3 transition-colors hover:bg-[color:var(--bg-panel-soft)]"
-           style="color: var(--gold); border: 1px solid var(--border-strong);">
-          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="5" x2="12" y2="19"/>
-            <line x1="5" y1="12" x2="19" y2="12"/>
-          </svg>
-          Register for an event
-        </a>
+        {{-- Help text --}}
+        <div class="rounded-lg p-3.5 text-xs leading-relaxed"
+             style="background: var(--bg-panel-soft); border: 1px solid var(--border); color: var(--ink-muted);">
+          <p class="flex gap-2">
+            <span>
+              Coaches' accounts are created by the intramurals committee.
+              If you can't log in, contact the admin at
+              <a href="mailto:intramurals@slsu.edu.ph"
+                 class="font-medium transition-colors hover:text-[color:var(--gold)]"
+                 style="color: var(--gold-soft);">
+                intramurals@slsu.edu.ph
+              </a>.
+            </span>
+          </p>
+        </div>
       </div>
 
       {{-- Footer credit --}}
@@ -267,6 +263,7 @@
   </main>
 
   <script>
+    // Show/hide password toggle
     function togglePassword(btn) {
       const input = btn.previousElementSibling;
       const eye = btn.querySelector('.icon-eye');

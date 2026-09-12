@@ -37,15 +37,44 @@
         </svg>
       </button>
 
+      {{-- ===== LOG IN (desktop) ===== --}}
+      <a href="{{ route('student.login') }}"
+         class="hidden sm:inline-flex items-center gap-2 text-sm font-medium px-3.5 py-2 rounded-md transition-all
+                hover:text-[color:var(--gold)]"
+         style="color: var(--ink-muted); border: 1px solid var(--border-strong, rgba(242,185,12,0.25));">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+          <polyline points="10 17 15 12 10 7"/>
+          <line x1="15" y1="12" x2="3" y2="12"/>
+        </svg>
+        <span>Log in</span>
+      </a>
+
+      {{-- ===== REGISTER (desktop) ===== --}}
       <a href="{{ route('register.create') }}"
          class="hidden sm:inline-block px-5 py-2 rounded-md font-semibold text-black transition-colors shadow-sm"
-         style="background: var(--gold); color: var(--black);">
+         style="background: var(--gold);">
         Register
       </a>
 
+      {{-- ===== LOG IN (mobile) ===== --}}
+      <a href="{{ route('student.login') }}"
+         class="sm:hidden p-2 rounded-md transition-colors hover:text-[color:var(--gold)]"
+         style="color: var(--ink-muted); border: 1px solid var(--border-strong, rgba(242,185,12,0.25));"
+         aria-label="Log in">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+          <polyline points="10 17 15 12 10 7"/>
+          <line x1="15" y1="12" x2="3" y2="12"/>
+        </svg>
+      </a>
+
+      {{-- ===== REGISTER (mobile) ===== --}}
       <a href="{{ route('register.create') }}"
          class="sm:hidden px-4 py-1.5 rounded-md text-black text-sm font-semibold transition-colors"
-         style="background: var(--gold); color: var(--black);">
+         style="background: var(--gold);">
         Register
       </a>
     </div>

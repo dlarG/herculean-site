@@ -25,6 +25,7 @@
   @include('partials.hero')
   @include('partials.about-carousel')
   @include('partials.category-grid')
+  @include('partials.faq')
   @include('partials.footer')
   @include('partials.details-modal')
 
