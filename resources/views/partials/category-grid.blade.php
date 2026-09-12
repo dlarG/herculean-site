@@ -17,11 +17,36 @@
               : asset('assets/sports/_default.jpg');
 
             // Member count label
-            $memberLabel = $sport->min_members === $sport->max_members
-              ? $sport->max_members . ' ' . \Illuminate\Support\Str::plural('member', $sport->max_members)
-              : $sport->min_members . '–' . $sport->max_members . ' members';
+            if ($sport->has_variants) {
+                // Parent category: derive range from its variants
+                $mins = $sport->variants->pluck('min_members');
+                $maxs = $sport->variants->pluck('max_members');
 
-            $isTeam = $sport->max_members > 1;
+                if ($sport->name === 'Mass Dance') {
+                    // Special case: sum both variants' capacity as a combined range
+                    $totalMax = $maxs->sum();
+                    $memberLabel = '1–' . $totalMax . ' members';
+                } else {
+                    $min = $mins->min();
+                    $max = $maxs->max();
+
+                    $memberLabel = $min === $max
+                        ? $max . ' ' . \Illuminate\Support\Str::plural('member', $max)
+                        : $min . '–' . $max . ' members';
+                }
+            } else {
+                // Standalone categories: use their own min/max
+                $memberLabel = $sport->min_members === $sport->max_members
+                    ? $sport->max_members . ' ' . \Illuminate\Support\Str::plural('member', $sport->max_members)
+                    : $sport->min_members . '–' . $sport->max_members . ' members';
+            }
+
+            // Decide if this card is team-based.
+            // - Parents with variants: check if ANY child is a team event
+            // - Standalone categories: check its own max_members
+            $isTeam = $sport->has_variants
+                ? $sport->variants->contains(fn ($v) => $v->max_members > 1)
+                : $sport->max_members > 1;
           @endphp
 
           <div class="sport-card-modern group relative rounded-2xl overflow-hidden flex flex-col">

@@ -241,7 +241,6 @@
         <div class="rounded-lg p-3.5 text-xs leading-relaxed"
              style="background: var(--bg-panel-soft); border: 1px solid var(--border); color: var(--ink-muted);">
           <p class="flex gap-2">
-            <span class="shrink-0">💡</span>
             <span>
               Coaches' accounts are created by the intramurals committee.
               If you can't log in, contact the admin at

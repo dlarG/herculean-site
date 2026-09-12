@@ -20,6 +20,7 @@ class CategorySeeder extends Seeder
             ['Sprint',         'Athletics', 10],
             ['Relay',          'Athletics', 20],
             ['Dance Sports',   'Dance',     10],
+            ['Mass Dance',      'Dance',    20],
         ];
 
         $parentIds = [];
@@ -57,6 +58,8 @@ class CategorySeeder extends Seeder
             ['Dance Sports',   'Dance Sports - Latin/American', 'Dance',      1, 2,   1],
             ['Dance Sports',   'Dance Sports - Standard',       'Dance',      1, 2,   2],
             ['Dance Sports',   'Dance Sports - Third Kind',     'Dance',      1, 2,   3],
+            ['Mass Dance',     'Dancer',                        'Dance',      1, 40,  1],
+            ['Mass Dance',     'Propsmen',                      'Dance',      1, 10,   2],
         ];
 
         foreach ($children as [$parentName, $name, $group, $min, $max, $sort]) {
@@ -118,7 +121,6 @@ class CategorySeeder extends Seeder
             ['Pangdalawahang Pag-arte',     'Literary-Musical', 1, 2, 50],
 
             // Dance — those without variants
-            ['Mass Dance',             'Dance',            1, 30,  20],
             ['Folk Dance',             'Dance',            1, 20,  30],
             ['Pop Dance',              'Dance',            1, 20,  40],
         ];

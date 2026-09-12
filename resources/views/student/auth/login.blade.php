@@ -73,9 +73,6 @@
            alt="Herculean Dragon"
            class="h-9 w-auto object-contain transition-opacity group-hover:opacity-90"
            onerror="this.style.display='none';">
-      <span class="hidden sm:inline font-display text-sm tracking-wider" style="color: var(--gold);">
-        HERCULEAN DRAGON
-      </span>
     </a>
 
     <a href="{{ route('home') }}"
@@ -218,7 +215,6 @@
           {{-- First-time hint --}}
           <div class="rounded-lg px-3.5 py-3 text-xs leading-relaxed flex gap-2.5"
                style="background: var(--bg-panel-soft); border: 1px solid var(--border); color: var(--ink-muted);">
-            <span class="shrink-0">💡</span>
             <span>
               <strong style="color: var(--ink);">First time logging in?</strong>
               Your password is your student number. You can change it after signing in.
