@@ -17,6 +17,8 @@
       <nav class="hidden sm:flex items-center gap-8 text-sm font-medium" style="color: var(--ink-muted);">
         <a href="#about" class="hover:text-[color:var(--gold)] transition-colors">About</a>
         <a href="#categories" class="hover:text-[color:var(--gold)] transition-colors">Categories</a>
+        <a href="#schedule" class="hover:text-[color:var(--gold)] transition-colors">Schedule</a>
+        <a href="#faq" class="hover:text-[color:var(--gold)] transition-colors">FAQ</a>
       </nav>
 
       {{-- Theme toggle --}}

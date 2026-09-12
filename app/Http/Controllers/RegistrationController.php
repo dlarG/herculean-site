@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Entry;
+use App\Models\Student;
+use Illuminate\Support\Facades\Hash;
+use App\Models\EntryMember;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -85,6 +89,22 @@ class RegistrationController extends Controller
             'members.*.email'          => 'nullable|max:150',
         ]);
 
+        // Reject anyone already registered for this exact category —
+        // checked BEFORE we write anything, so a duplicate never creates
+        // a partial entry.
+        foreach ($validated['members'] as $index => $member) {
+            $alreadyRegistered = EntryMember::where('student_number', $member['student_number'])
+                ->whereHas('entry', fn ($q) => $q->where('category_id', $category->id))
+                ->exists();
+
+            if ($alreadyRegistered) {
+                throw ValidationException::withMessages([
+                    "members.$index.student_number" =>
+                        "Student number {$member['student_number']} is already registered for {$category->name}.",
+                ]);
+            }
+        }
+
         DB::transaction(function () use ($validated, $category) {
             foreach ($validated['members'] as $memberData) {
                 $entry = Entry::create([
@@ -92,6 +112,17 @@ class RegistrationController extends Controller
                 ]);
 
                 $entry->members()->create($memberData);
+
+                // Auto-provision a student login the first time we see this
+                // student number. Default password is their student number —
+                // they can be told to change it after logging in.
+                Student::firstOrCreate(
+                    ['student_number' => $memberData['student_number']],
+                    [
+                        'full_name' => $memberData['full_name'],
+                        'password'  => Hash::make($memberData['student_number']),
+                    ]
+                );
             }
         });
 
@@ -99,4 +130,5 @@ class RegistrationController extends Controller
             ->route('register.create')
             ->with('success', "Thank you for registering. Registered for {$category->name}. Please wait for a message from your coach for further instructions. Please keep your messenger and lines open.");
     }
+
 }

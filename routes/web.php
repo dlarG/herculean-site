@@ -7,6 +7,8 @@ use App\Http\Controllers\Coach\CoachDashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\StudentAuthController;
+use App\Http\Controllers\StudentDashboardController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/register', [RegistrationController::class, 'create'])->name('register.create');
@@ -36,4 +38,16 @@ Route::middleware('auth:coach')->prefix('coach')->name('coach.')->group(function
     Route::get('/announcements/create', [CoachDashboardController::class, 'createAnnouncement'])->name('announcements.create');
     Route::post('/announcements', [CoachDashboardController::class, 'storeAnnouncement'])->name('announcements.store');
     Route::delete('/announcements/{announcement}', [CoachDashboardController::class, 'destroyAnnouncement'])->name('announcements.destroy');
+});
+
+Route::prefix('student')->name('student.')->group(function () {
+    Route::middleware('guest:student')->group(function () {
+        Route::get('/login', [StudentAuthController::class, 'showLoginForm'])->name('login');
+        Route::post('/login', [StudentAuthController::class, 'login'])->name('login.attempt');
+    });
+
+    Route::middleware('auth:student')->group(function () {
+        Route::get('/dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
+        Route::post('/logout', [StudentAuthController::class, 'logout'])->name('logout');
+    });
 });
