@@ -5,7 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\CoachAuthController;
 use App\Http\Controllers\Auth\StudentAuthController;
 use App\Http\Controllers\CoachAnnouncementController;
-use App\Http\Controllers\CoachDashboardController;
+use App\Http\Controllers\Coach\CoachDashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\StudentDashboardController;
@@ -41,6 +41,7 @@ Route::prefix('coach')->name('coach.')->group(function () {
         Route::post('/password/change', [CoachAuthController::class, 'changePassword'])->name('password.update');
 
         Route::get('/dashboard', [CoachDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/participants', [CoachDashboardController::class, 'participants'])->name('participants');
         Route::get('/export', [CoachDashboardController::class, 'exportPdf'])->name('export');
 
         Route::get('/announcements', [CoachAnnouncementController::class, 'index'])->name('announcements.index');

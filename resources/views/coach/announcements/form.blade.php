@@ -1,30 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ $announcement->exists ? 'Edit' : 'New' }} Announcement — Herculean Dragon</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        :root { --bg:#0D0D0C; --bg-panel:#191814; --gold:#F2B90C; --gold-soft:#C99A1E; --ink:#F4F1E8; --ink-muted:#B9B4A6; }
-        body { background: var(--bg); color: var(--ink); font-family: 'Inter', sans-serif; }
-        .display { font-family: 'Anton', sans-serif; letter-spacing: 0.01em; }
-        .field { background: var(--bg-panel); border: 1px solid rgba(242,185,12,0.25); color: var(--ink); }
-        .field:focus { outline: none; border-color: var(--gold); }
-    </style>
-</head>
-<body class="antialiased">
-    <header class="border-b" style="border-color: rgba(242,185,12,0.14);">
-        <div class="max-w-2xl mx-auto px-5 h-16 flex items-center">
-            <a href="{{ route('coach.announcements.index') }}" class="text-sm" style="color: var(--ink-muted);">&larr; Announcements</a>
-        </div>
-    </header>
 
-    <main class="max-w-2xl mx-auto px-5 py-10">
-        <h1 class="display text-3xl mb-6" style="color: var(--gold);">
-            {{ $announcement->exists ? 'EDIT' : 'NEW' }} ANNOUNCEMENT
-        </h1>
+@section('title', $announcement->exists ? 'Edit Announcement' : 'New Announcement')
+
+@section('content')
+  <div class="max-w-2xl mx-auto">
+    <div class="mb-6">
+      <a href="{{ route('coach.announcements.index') }}"
+         class="text-sm inline-flex items-center gap-1.5 transition-colors hover:text-[color:var(--gold)]"
+         style="color: var(--ink-muted);">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Back to announcements
+      </a>
+    </div>
+
+    <h1 class="font-display text-3xl mb-6" style="color: var(--gold);">
+      {{ $announcement->exists ? 'EDIT' : 'NEW' }} ANNOUNCEMENT
+    </h1>
 
         @if ($errors->any())
             <div class="mb-6 rounded border px-4 py-3 text-sm" style="border-color: #a03b3b; background: rgba(160,59,59,0.12); color: #f2a5a5;">
@@ -94,6 +88,5 @@
                 {{ $announcement->exists ? 'Save changes' : 'Post announcement' }}
             </button>
         </form>
-    </main>
-</body>
-</html>
+  </div>
+@endsection
