@@ -1,10 +1,10 @@
 @php
   $heroImages = [
-    'assets/intrams-02.jpg',
-    'assets/intrams-10.jpg',
-    'assets/intrams-08.jpg',
-    'assets/intrams-09.jpg',
+    'assets/intrams-03.jpg',
     'assets/intrams-05.jpg',
+    'assets/intrams-10.jpg',
+    'assets/intrams-02.jpg',
+    'assets/intrams-04.jpg',
     'assets/intrams-06.jpg',
     'assets/intrams-07.jpg',
     'assets/intrams-08.jpg',

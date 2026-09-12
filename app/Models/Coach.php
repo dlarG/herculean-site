@@ -15,7 +15,7 @@ class Coach extends Authenticatable
 
     protected $hidden = ['password', 'remember_token'];
 
-    protected $casts = ['must_change_password' => 'boolean'];
+    protected $casts = ['must_change_password' => 'boolean', 'password' => 'hashed'];
 
     public function categories(): BelongsToMany
     {

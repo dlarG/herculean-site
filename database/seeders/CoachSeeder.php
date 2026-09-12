@@ -21,7 +21,7 @@ class CoachSeeder extends Seeder
             'Gerald Catina'            => ['100m Sprint', '200m Sprint', '400m Sprint', '4x100m Relay', '4x400m Relay', 'Long Jump', 'Triple Jump', 'Shot Put', 'Discus', 'Javelin'],
             'John Ryan Mangmang'       => ['100m Sprint', '200m Sprint', '400m Sprint', '4x100m Relay', '4x400m Relay', 'Long Jump', 'Triple Jump', 'Shot Put', 'Discus', 'Javelin', 'Table Tennis'],
             'Mark Clarence Intal'      => ['Badminton'],
-            'Edevan Jay Magdula'       => ['Badminton'],
+            'Edevan Jay Magdula'       => ['Badminton', 'Pop Dance'],
             'Joedee Mark Rodriguez'    => ['Baseball', 'Football'],
             'Geraldine Mangmang'       => ['Baseball'],
             'Jorton Tagud'             => ['Basketball 5x5', 'Basketball 3x3'],
@@ -46,7 +46,18 @@ class CoachSeeder extends Seeder
             'Lucila Bacalla'           => ['Pop Solo', 'Vocal Duet', 'Vocal Solo Kundiman', 'Song Writing', 'Piano'],
             'Jasmin Dayunan'           => ['Pop Solo', 'Vocal Duet', 'Vocal Solo Kundiman', 'Song Writing', 'Piano'],
             'Gia Caro'                 => ['Declamation'],
-            'Jomarie Salar'            => ['Extemporaneous Speaking'],
+            'Jomarie Salar'            => ['Extemporaneous Speaking', 'Essay Writing', 'Short and Sweet Play Dialog', 'Pangdalawahang Pag-arte'],
+            'Dinah Catamco'            => ['Extemporaneous Speaking', 'Essay Writing', 'Short and Sweet Play Dialog', 'Pangdalawahang Pag-arte'],
+            'Alma Arnijo'              => ['Extemporaneous Speaking', 'Essay Writing', 'Short and Sweet Play Dialog', 'Pangdalawahang Pag-arte'],
+            'Kent Torion'              => ['Extemporaneous Speaking', 'Essay Writing', 'Short and Sweet Play Dialog', 'Pangdalawahang Pag-arte'],
+            'Gilbert Siega'            => ['Mass Dance'],
+            'Christian Erol Bandalan'  => ['Folk Dance', 'Dance Sports - Latin/American', 'Dance Sports - Standard', 'Dance Sports - Third Kind'],
+            'Rose Mae Ugat'            => ['Folk Dance'],
+            'Jerald Tomboc'            => ['Pop Dance'],
+            'Joedezza Mae Pilapil'     => ['Pop Dance'],
+            'Rhoderick Malangsa'       => ['Dance Sports - Latin/American', 'Dance Sports - Standard', 'Dance Sports - Third Kind'],
+            'Joshua Obtiar'            => ['Dance Sports - Latin/American', 'Dance Sports - Standard', 'Dance Sports - Third Kind'],
+            'Darwin Dangcalan'            => ['Dance Sports - Latin/American', 'Dance Sports - Standard', 'Dance Sports - Third Kind'],
         ];
 
         foreach ($assignments as $name => $categoryNames) {
