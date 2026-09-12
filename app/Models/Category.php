@@ -23,11 +23,13 @@ class Category extends Model
         'parent_id',
         'has_variants',
         'sort_order',
+        'is_team_event',
     ];
 
     protected $casts = [
         'is_open'      => 'boolean',
         'has_variants' => 'boolean',
+        'is_team_event' => 'boolean',
     ];
 
     public function parent(): BelongsTo

@@ -3,12 +3,14 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\CoachAuthController;
-use App\Http\Controllers\Coach\CoachDashboardController;
+use App\Http\Controllers\Auth\StudentAuthController;
+use App\Http\Controllers\CoachAnnouncementController;
+use App\Http\Controllers\CoachDashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegistrationController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\StudentAuthController;
 use App\Http\Controllers\StudentDashboardController;
+use Illuminate\Support\Facades\Route;
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/register', [RegistrationController::class, 'create'])->name('register.create');
@@ -26,18 +28,28 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::post('/entries/export-pdf', [AdminController::class, 'exportPdf'])->name('entries.export-pdf');
 });
 
-Route::middleware('auth:coach')->prefix('coach')->name('coach.')->group(function () {
-    Route::get('/change-password', [CoachAuthController::class, 'showChangePasswordForm'])->name('password.change');
-    Route::post('/change-password', [CoachAuthController::class, 'changePassword'])->name('password.update');
+Route::prefix('coach')->name('coach.')->group(function () {
+    Route::middleware('guest:coach')->group(function () {
+        Route::get('/login', [CoachAuthController::class, 'showLoginForm'])->name('login');
+        Route::post('/login', [CoachAuthController::class, 'login'])->name('login.attempt');
+    });
 
-    Route::get('/dashboard', [CoachDashboardController::class, 'index'])->name('dashboard');
-    Route::get('/events', [CoachDashboardController::class, 'myEvents'])->name('events');
-    Route::get('/students', [CoachDashboardController::class, 'myStudents'])->name('students');
+    Route::middleware('auth:coach')->group(function () {
+        Route::post('/logout', [CoachAuthController::class, 'logout'])->name('logout');
 
-    Route::get('/announcements', [CoachDashboardController::class, 'announcements'])->name('announcements');
-    Route::get('/announcements/create', [CoachDashboardController::class, 'createAnnouncement'])->name('announcements.create');
-    Route::post('/announcements', [CoachDashboardController::class, 'storeAnnouncement'])->name('announcements.store');
-    Route::delete('/announcements/{announcement}', [CoachDashboardController::class, 'destroyAnnouncement'])->name('announcements.destroy');
+        Route::get('/password/change', [CoachAuthController::class, 'showChangePasswordForm'])->name('password.change');
+        Route::post('/password/change', [CoachAuthController::class, 'changePassword'])->name('password.update');
+
+        Route::get('/dashboard', [CoachDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/export', [CoachDashboardController::class, 'exportPdf'])->name('export');
+
+        Route::get('/announcements', [CoachAnnouncementController::class, 'index'])->name('announcements.index');
+        Route::get('/announcements/create', [CoachAnnouncementController::class, 'create'])->name('announcements.create');
+        Route::post('/announcements', [CoachAnnouncementController::class, 'store'])->name('announcements.store');
+        Route::get('/announcements/{announcement}/edit', [CoachAnnouncementController::class, 'edit'])->name('announcements.edit');
+        Route::put('/announcements/{announcement}', [CoachAnnouncementController::class, 'update'])->name('announcements.update');
+        Route::delete('/announcements/{announcement}', [CoachAnnouncementController::class, 'destroy'])->name('announcements.destroy');
+    });
 });
 
 Route::prefix('student')->name('student.')->group(function () {

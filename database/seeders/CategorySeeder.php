@@ -34,6 +34,7 @@ class CategorySeeder extends Seeder
                 'parent_id'           => null,
                 'has_variants'        => true,
                 'sort_order'          => $sort,
+                'is_team_event'       => false, // parents are navigational only, never registered directly
             ]);
             $parentIds[$name] = $parent->id;
         }
@@ -69,6 +70,7 @@ class CategorySeeder extends Seeder
                 'parent_id'       => $parentIds[$parentName],
                 'has_variants'    => false,
                 'sort_order'      => $sort,
+                'is_team_event'   => $max > 1,
             ]);
         }
 
@@ -132,6 +134,7 @@ class CategorySeeder extends Seeder
                 'parent_id'       => null,
                 'has_variants'    => false,
                 'sort_order'      => $sort,
+                'is_team_event'   => $max > 1,
             ]);
         }
     }
