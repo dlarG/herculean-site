@@ -101,7 +101,7 @@
               <a href="{{ route('register.create', ['sport' => $sport->name]) }}"
                  class="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider px-3 py-2 rounded-md text-black transition-all hover:gap-2"
                  style="background: var(--gold);">
-                Register <span class="text-base leading-none">→</span>
+                Join Now <span class="text-base leading-none">→</span>
               </a>
             </div>
 
