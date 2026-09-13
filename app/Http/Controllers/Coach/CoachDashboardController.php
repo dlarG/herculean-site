@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Coach;
 
 use App\Http\Controllers\Controller;
+use App\Models\Entry;
 use App\Models\EntryMember;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -14,10 +15,30 @@ class CoachDashboardController extends Controller
     {
         $coach = Auth::guard('coach')->user();
 
-        $categories = $coach->categories()->withCount('entries')->orderBy('name')->get();
+        // Expand any parent-with-variants (like "Mass Dance") into its actual
+        // registrable children ("Dancer", "Propsmen") — those are what
+        // entries actually attach to, never the parent itself.
+        $displayCategories = $coach->categories()->with('variants')->orderBy('name')->get()
+            ->flatMap(fn ($cat) => $cat->has_variants ? $cat->variants : collect([$cat]))
+            ->unique('id')
+            ->values();
+
+        $counts = Entry::whereIn('category_id', $displayCategories->pluck('id'))
+            ->selectRaw('category_id, count(*) as c')
+            ->groupBy('category_id')
+            ->pluck('c', 'category_id');
+
+        $displayCategories->each(function ($cat) use ($counts) {
+            $cat->entries_count = $counts[$cat->id] ?? 0;
+        });
+
         $announcements = $coach->announcements()->with('category')->latest()->get();
 
-        return view('coach.dashboard', compact('coach', 'categories', 'announcements'));
+        return view('coach.dashboard', [
+            'coach'        => $coach,
+            'categories'   => $displayCategories,
+            'announcements' => $announcements,
+        ]);
     }
 
     /**
@@ -26,7 +47,7 @@ class CoachDashboardController extends Controller
     public function participants(Request $request)
     {
         $coach = Auth::guard('coach')->user();
-        $categoryIds = $coach->categories()->pluck('categories.id');
+        $categoryIds = $this->registrableCategoryIds($coach);
 
         $query = EntryMember::with('entry.category')
             ->whereHas('entry', fn ($q) => $q->whereIn('category_id', $categoryIds));
@@ -48,8 +69,12 @@ class CoachDashboardController extends Controller
 
         $participants = $query->latest()->paginate(50)->withQueryString();
 
-        // Need categories for the filter dropdown
-        $categories = $coach->categories()->orderBy('name')->get();
+        // Filter dropdown needs the expanded (leaf) categories too —
+        // filtering by "Mass Dance" itself would never match anything.
+        $categories = $coach->categories()->with('variants')->orderBy('name')->get()
+            ->flatMap(fn ($cat) => $cat->has_variants ? $cat->variants : collect([$cat]))
+            ->unique('id')
+            ->values();
 
         return view('coach.participants', compact('coach', 'participants', 'categories'));
     }
@@ -60,7 +85,7 @@ class CoachDashboardController extends Controller
     public function exportPdf(Request $request)
     {
         $coach = Auth::guard('coach')->user();
-        $categoryIds = $coach->categories()->pluck('categories.id');
+        $categoryIds = $this->registrableCategoryIds($coach);
 
         $query = EntryMember::with('entry.category')
             ->whereHas('entry', fn ($q) => $q->whereIn('category_id', $categoryIds));
@@ -92,5 +117,17 @@ class CoachDashboardController extends Controller
         $filename = 'herculean-dragon-' . str($coach->username)->slug() . '-' . now()->format('Y-m-d-His') . '.pdf';
 
         return $pdf->download($filename);
+    }
+
+    /**
+     * Every category ID this coach's registrations can actually land under —
+     * expanding any assigned parent-with-variants into its children.
+     */
+    private function registrableCategoryIds($coach)
+    {
+        return $coach->categories()->with('variants')->get()
+            ->flatMap(fn ($cat) => $cat->has_variants ? $cat->variants->pluck('id') : collect([$cat->id]))
+            ->unique()
+            ->values();
     }
 }
