@@ -8,14 +8,16 @@ use App\Http\Controllers\CoachAnnouncementController;
 use App\Http\Controllers\Coach\CoachDashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\StudentDashboardController;
 use Illuminate\Support\Facades\Route;
+
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/register', [RegistrationController::class, 'create'])->name('register.create');
 Route::post('/register', [RegistrationController::class, 'store'])->name('register.store');
-
+Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
 // Guest-only auth routes
 Route::get('/admin/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/admin/login', [AuthController::class, 'login'])->name('login.attempt');

@@ -87,6 +87,9 @@ function initThemeToggle() {
 
 // ── Boot ─────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
+    const modalImageWrapper = document.getElementById("modalImageWrapper");
+    const modalImage = document.getElementById("modalImage");
+
     initDetailsModal();
     initHeroCarousel();
     initThemeToggle();

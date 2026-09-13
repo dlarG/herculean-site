@@ -19,46 +19,46 @@
     </div>
 
     {{-- FAQ items --}}
-    @php
-      $faqs = [
-        [
-          'q' => 'Who can join the Intramurals?',
-          'a' => 'All currently enrolled SLSU Sogod students from the FHTM and FCIS departments are eligible to join. Every member listed in a registration must be an active student of the university.',
-        ],
-        [
-          'q' => 'How do I register for an event?',
-          'a' => 'Click the Register button on the homepage, choose your category (like Basketball or Sprint), pick a specific event if needed, then fill in the details of every member joining. You can register for as many categories as you want — one submission per category.',
-        ],
-        [
-          'q' => 'Can I join more than one event?',
-          'a' => 'Yes. There is no limit to how many categories you can register for. Just make sure event schedules don\'t overlap so you can attend all your matches.',
-        ],
-        [
-          'q' => 'What is a "team event" vs an "individual event"?',
-          'a' => 'Individual events (like Chess, 100m Sprint, or Pop Solo) only require one member. Team events (like Basketball, Volleyball, or Mass Dance) require a specific number of members — you\'ll see the required range shown on each category card.',
-        ],
-        [
-          'q' => 'How many members can I add to a team?',
-          'a' => 'Each sport has its own roster rules — for example, Basketball 5x5 allows up to 12 members, Beach Volleyball allows up to 4. The exact range is shown on every category card and in the registration form.',
-        ],
-        [
-          'q' => 'What information do I need to prepare?',
-          'a' => 'For each member: full name, student number, gender, program, year level, contact number, and their Facebook account link. The Facebook link is important — it\'s how your coach will contact you with schedule updates.',
-        ],
-        [
-          'q' => 'Can I edit my registration after submitting?',
-          'a' => 'No. Once you submit, your entry is final. Please double-check every detail — especially student numbers and spelling of names — before clicking Submit.',
-        ],
-        [
-          'q' => 'How do I know if I\'ve been accepted?',
-          'a' => 'After submitting, you\'ll see a confirmation message on screen. Your coach will then reach out through the Facebook account you provided with further instructions, so keep your Messenger and lines open.',
-        ],
-        [
-          'q' => 'Who do I contact for questions?',
-          'a' => 'Reach out to the intramurals committee at intramurals@slsu.edu.ph, or message your event coach directly. Coach assignments are listed on each category card.',
-        ],
-      ];
-    @endphp
+  @php
+    $faqs = [
+      [
+        'q' => 'Who is eligible to participate in the Intramural Meet?',
+        'a' => 'All bona fide students of SLSU Sogod Campus with verified credentials and medical clearance from the University medical physician are eligible. However, 2026 Regional SCUAA athletes cannot play as athletes, pre-2026 SCUAA players must play a different sport, active Basketball trainees are excluded from all events, and members of performing groups under the Office of Arts, Culture, and Global Heritage cannot compete in arts or dance events.',
+      ],
+      [
+        'q' => 'How and when must official rosters be submitted?',
+        'a' => 'Official lists of players and athlete galleries, along with medical consent, must be submitted by the General Athletic Managers (GAMs) directly to the SSC Screening Technical Committee on or before October 9, 2026.',
+      ],
+      [
+        'q' => 'How many events can a single participant join?',
+        'a' => 'Each player may join a maximum of three (3) events: either one (1) team game and two (2) individual events, or three (3) individual events with no team game.',
+      ],
+      [
+        'q' => 'What is the attendance policy and grace period on game days?',
+        'a' => 'Participants must strictly follow the schedule. A grace period of ten (10) minutes from the designated event schedule is enforced; failing to appear by the last call (10 minutes before the event) results in default and disqualification.',
+      ],
+      [
+        'q' => 'What is the required uniform for sports competitions?',
+        'a' => 'Participants must wear their Official Team Uniform for the 1st Game and Championship Games. Matching team colors are permitted for subsequent games. Non-compliance results in immediate disqualification.',
+      ],
+      [
+        'q' => 'What tournament formats are used for sports events?',
+        'a' => 'Most sports follow a single-elimination format, except for Swimming and Athletics. Chess uses a round-robin format, while a Modified Single Elimination bracket is used to determine 3rd and 4th place winners.',
+      ],
+      [
+        'q' => 'What is the Technical and Solidarity Meeting, and who must attend?',
+        'a' => 'Scheduled for October 14, 2026, at 9:00 AM at the MPC, this meeting sets ground rules, team seeds, and match draws. Attendance is mandatory for Coaches, Assistant Coaches, Team Captains, Delegation Officials, and GAMs. Missing the meeting waives the right to contest proceedings.',
+      ],
+      [
+        'q' => 'How are official complaints and protests filed?',
+        'a' => 'No verbal complaints are accepted. Written complaints using the official Intramural Protest Form must be submitted on the day of the incident, signed by the Student GAM, Faculty GAM, and Team Captain, noted by the Faculty Dean, and directed to the Overall Chairman. Decisions of the Intramural Committee, TMs, and Board of Judges are final.',
+      ],
+      [
+        'q' => 'Are outside trainers or choreographers allowed for cultural events?',
+        'a' => 'Hiring outside choreographers and professional assistance is allowed specifically for the Dance Sports Competition. Active coaching during competitions by team advisers or prohibited performing group members is strictly banned in other categories.',
+      ],
+    ];
+  @endphp
 
     {{-- Accordion --}}
     <div class="space-y-3">
