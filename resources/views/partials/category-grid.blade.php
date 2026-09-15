@@ -64,8 +64,8 @@
 
               {{-- Top pill: team or individual --}}
               <div class="absolute top-3 right-3">
-                <span class="text-[10px] font-semibold uppercase tracking-[0.12em] px-2.5 py-1 rounded-full backdrop-blur-sm"
-                      style="background: rgba(0,0,0,0.55); color: var(--gold); border: 1px solid rgba(242,185,12,0.4);">
+                <span class="text-[10px] font-semibold uppercase text-white tracking-[0.12em] px-2.5 py-1 rounded-full backdrop-blur-sm"
+                      style="background: rgba(0,0,0,0.55); border: 1px solid rgba(24, 12, 242, 0.4);">
                   {{ $isTeam ? 'Team' : 'Individual' }}
                 </span>
               </div>
@@ -99,7 +99,7 @@
               </button>
 
               <a href="{{ route('register.create', ['sport' => $sport->name]) }}"
-                 class="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider px-3 py-2 rounded-md text-black transition-all hover:gap-2"
+                 class="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider px-3 py-2 rounded-md text-white transition-all hover:gap-2"
                  style="background: var(--gold);">
                 Join Now <span class="text-base leading-none">→</span>
               </a>

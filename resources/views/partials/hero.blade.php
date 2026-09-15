@@ -71,8 +71,8 @@
 
       <div class="mt-10 flex flex-wrap gap-4">
         <a href="#categories"
-           class="px-7 py-3.5 rounded-md font-semibold text-black transition-all hover:scale-[1.02] active:scale-[0.98]"
-           style="background: var(--gold); box-shadow: 0 14px 40px -12px rgba(242,185,12,0.6);">
+           class="px-7 py-3.5 rounded-md font-semibold text-white transition-all hover:scale-[1.02] active:scale-[0.98]"
+           style="background: var(--gold); box-shadow: 0 14px 40px -12px rgba(8, 42, 127, 0.6);">
           View Categories
         </a>
         <a href="{{ route('register.create') }}"

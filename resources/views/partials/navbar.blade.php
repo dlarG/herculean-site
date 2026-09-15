@@ -1,16 +1,16 @@
-<header class="p-2 sticky top-0 z-40 backdrop-blur-sm"
+<header class="p-3 sticky top-0 z-40 backdrop-blur-sm"
         style="background: color-mix(in srgb, var(--bg) 92%, transparent); border-bottom: 1px solid var(--border);">
   <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between gap-4">
     <a href="{{ route('home') }}" class="flex items-center gap-3 group shrink-0">
       {{-- Dark-mode logo --}}
-      <img src="{{ asset('assets/intrams-white.png') }}"
+      <img src="{{ asset('assets/HD_Logo_LIGHT_Horizontal.png') }}"
            alt="Herculean Dragon Logo"
-           class="h-14 w-auto object-contain transition-opacity group-hover:opacity-90 logo-dark">
+           class="h-19 w-auto object-contain transition-opacity group-hover:opacity-90 logo-dark">
 
       {{-- Light-mode logo --}}
-      <img src="{{ asset('assets/intrams-black.png') }}"
+      <img src="{{ asset('assets/HD_Logo_DARK_Horizontal.png') }}"
            alt="Herculean Dragon Logo"
-           class="h-14 w-auto object-contain transition-opacity group-hover:opacity-90 logo-light hidden">
+           class="h-19 w-auto object-contain transition-opacity group-hover:opacity-90 logo-light hidden">
     </a>
 
     <div class="flex items-center gap-3 sm:gap-6">
@@ -53,7 +53,7 @@
 
       {{-- ===== REGISTER (desktop) ===== --}}
       <a href="{{ route('register.create') }}"
-         class="hidden sm:inline-block px-5 py-2 rounded-md font-semibold text-black transition-colors shadow-sm"
+         class="hidden sm:inline-block px-5 py-2 rounded-md font-semibold text-white transition-colors shadow-sm"
          style="background: var(--gold);">
         Register
       </a>

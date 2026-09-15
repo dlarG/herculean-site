@@ -14,8 +14,8 @@
          style="border-bottom: 1px solid var(--border);">
       <div class="min-w-0">
         <span id="modalGroupPill"
-              class="inline-block text-[10px] font-semibold uppercase tracking-[0.15em] px-2.5 py-1 rounded-full mb-2"
-              style="background: var(--pill-bg); color: var(--gold-soft); border: 1px solid var(--pill-border);">
+              class="inline-block text-[10px] font-semibold text-white uppercase tracking-[0.15em] px-2.5 py-1 rounded-full mb-2"
+              style="background: var(--pill-bg);  border: 1px solid var(--pill-border);">
           Group
         </span>
         <h3 id="detailsModalTitle" class="font-display text-2xl leading-tight" style="color: var(--gold);"></h3>
@@ -69,7 +69,7 @@
     <div class="px-6 pb-6 pt-4 flex flex-col sm:flex-row gap-3 shrink-0"
          style="border-top: 1px solid var(--border);">
       <a id="modalRegisterBtn" href="#"
-         class="flex-1 text-center px-5 py-3 rounded-md font-semibold text-black transition-colors"
+         class="flex-1 text-center px-5 py-3 rounded-md font-semibold text-white transition-colors"
          style="background: var(--gold);">
         Register for this category
       </a>

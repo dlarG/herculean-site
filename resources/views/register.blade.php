@@ -12,16 +12,22 @@
   <style>
     :root {
       --bg: #0D0D0C;
-      --bg-panel: #191814;
-      --bg-panel-soft: rgba(242, 185, 12, 0.04);
+      --bg-panel: #131a30;
+      --bg-panel-soft: rgba(16, 21, 43, 0.4);
       --border: rgba(242, 185, 12, 0.14);
-      --border-strong: rgba(242, 185, 12, 0.25);
-      --gold: #F2B90C;
-      --gold-soft: #C99A1E;
-      --ink: #F4F1E8;
-      --ink-muted: #B9B4A6;
-      --pill-bg: rgba(242, 185, 12, 0.12);
-      --pill-border: rgba(242, 185, 12, 0.25);
+      --border-strong: rgba(16, 21, 43, 0.6);
+      --gold: #3a4a8a;
+      --gold-soft: #252e4d;
+      --ink: #f4f1e8;
+      --ink-muted: #b9b4a6;
+      --pill-bg: rgba(58, 74, 138, 0.2);
+      --pill-border: rgba(58, 74, 138, 0.4);
+      --shadow-gold: rgba(16, 21, 43, 0.6);
+      --overlay: rgba(0, 0, 0, 0.7);
+      --hero-overlay-top: rgba(0, 0, 0, 0.55);
+      --hero-overlay-mid: rgba(0, 0, 0, 0.75);
+      --hero-overlay-bottom: rgba(0, 0, 0, 0.9);
+      --hero-tint-opacity: 0.28;
     }
     body {
       background: var(--bg);
@@ -32,14 +38,22 @@
 
     .field {
       background: var(--bg-panel);
-      border: 1px solid var(--border-strong);
+      border: 1px solid rgba(255, 255, 255, 0.35); /* Solid-ish white border */
       color: var(--ink);
       transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
     .field:focus {
       outline: none;
-      border-color: var(--gold);
-      box-shadow: 0 0 0 3px rgba(242, 185, 12, 0.12);
+      border-color: var(--gold); /* Turns navy on focus */
+      box-shadow: 0 0 0 3px rgba(58, 74, 138, 0.25); /* Navy glow instead of gold */
+    }
+    /* Light mode override so it doesn't look weird on white */
+    [data-theme="light"] .field {
+      border: 1px solid rgba(16, 21, 43, 0.2);
+    }
+    [data-theme="light"] .field:focus {
+      border-color: var(--gold); /* Deep navy on focus */
+      box-shadow: 0 0 0 3px rgba(16, 21, 43, 0.1);
     }
     .field::placeholder { color: var(--ink-muted); opacity: 0.6; }
 
@@ -263,7 +277,7 @@
             </div>
             <button type="submit"
                     class="w-full font-semibold rounded-lg px-6 py-4 text-black text-base transition-all hover:scale-[1.01] active:scale-[0.99]"
-                    style="background: var(--gold); box-shadow: 0 14px 40px -12px rgba(242,185,12,0.5);">
+                    style="background: var(--gold); box-shadow: 0 14px 40px -12px rgba(12, 58, 242, 0.5);">
               Submit registration
             </button>
             <p class="mt-3 text-xs text-center" style="color: var(--ink-muted);">
@@ -315,7 +329,7 @@
     <div class="lg:hidden mobile-submit-bar">
       <button type="submit" form="regForm"
               class="w-full font-semibold rounded-lg px-6 py-4 text-black text-base"
-              style="background: var(--gold); box-shadow: 0 14px 40px -12px rgba(242,185,12,0.5);">
+              style="background: var(--gold); box-shadow: 0 14px 40px -12px rgba(12, 12, 242, 0.5);">
         Submit registration
       </button>
     </div>
@@ -340,7 +354,7 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="sm:col-span-2">
-          <label class="block text-xs font-medium mb-1.5" style="color: var(--ink-muted);">Full name</label>
+          <label class="block text-xs font-medium mb-1.5" style="color: white">Full name</label>
           <input type="text" class="member-full_name field w-full rounded-lg px-3.5 py-2.5 text-sm" required>
         </div>
 
@@ -381,7 +395,7 @@
 
         <div class="sm:col-span-2">
           <label class="block text-xs font-medium mb-1.5" style="color: var(--ink-muted);">Contact number</label>
-          <input type="text" class="member-contact_number field w-full rounded-lg px-3.5 py-2.5 text-sm">
+          <input type="text" class="member-contact_number field w-full rounded-lg px-3.5 py-2.5 text-sm" required>
         </div>
 
         <div class="sm:col-span-2">
@@ -389,7 +403,7 @@
             Facebook account link <span class="text-[10px] opacity-60">(optional)</span>
           </label>
           <input type="text" class="member-email field w-full rounded-lg px-3.5 py-2.5 text-sm"
-                 placeholder="https://facebook.com/yourprofile">
+                 placeholder="https://facebook.com/yourprofile" required>
         </div>
       </div>
     </div>

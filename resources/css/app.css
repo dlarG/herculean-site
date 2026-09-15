@@ -10,21 +10,20 @@
    Two palettes: [data-theme="dark"] (default) and [data-theme="light"].
    All component styles reference these variables.
    ───────────────────────────────────────────────────────────── */
-
 :root,
 [data-theme="dark"] {
     --bg: #0d0d0c;
-    --bg-panel: #191814;
-    --bg-panel-soft: rgba(242, 185, 12, 0.04);
-    --border: rgba(242, 185, 12, 0.14);
-    --border-strong: rgba(242, 185, 12, 0.25);
-    --gold: #f2b90c;
-    --gold-soft: #c99a1e;
+    --bg-panel: #131a30;
+    --bg-panel-soft: rgba(16, 21, 43, 0.4);
+    --border: rgba(255, 255, 255, 0.15); /* Was 0.08 — now more visible */
+    --border-strong: rgba(255, 255, 255, 0.35);
+    --gold: #3a4a8a;
+    --gold-soft: #252e4d;
     --ink: #f4f1e8;
     --ink-muted: #b9b4a6;
-    --pill-bg: rgba(242, 185, 12, 0.12);
-    --pill-border: rgba(242, 185, 12, 0.25);
-    --shadow-gold: rgba(242, 185, 12, 0.25);
+    --pill-bg: rgba(58, 74, 138, 0.2);
+    --pill-border: rgba(58, 74, 138, 0.4);
+    --shadow-gold: rgba(16, 21, 43, 0.6);
     --overlay: rgba(0, 0, 0, 0.7);
     --hero-overlay-top: rgba(0, 0, 0, 0.55);
     --hero-overlay-mid: rgba(0, 0, 0, 0.75);
@@ -34,17 +33,17 @@
 
 [data-theme="light"] {
     --bg: #ffffff;
-    --bg-panel: #faf7ee;
-    --bg-panel-soft: rgba(242, 185, 12, 0.08);
-    --border: rgba(201, 154, 30, 0.25);
-    --border-strong: rgba(201, 154, 30, 0.45);
-    --gold: #b8890a;
-    --gold-soft: #8a6608;
+    --bg-panel: #f7f8fa;
+    --bg-panel-soft: rgba(16, 21, 43, 0.4);
+    --border: #3a4a8a;
+    --border-strong: #3a4a8a;
+    --gold: #0a0e1a;
+    --gold-soft: #3a4a8a;
     --ink: #1a1712;
     --ink-muted: #6b6455;
     --pill-bg: rgba(242, 185, 12, 0.18);
-    --pill-border: rgba(201, 154, 30, 0.4);
-    --shadow-gold: rgba(184, 137, 10, 0.2);
+    --pill-border: #3a4a8a;
+    --shadow-gold: #3a4a8a;
     --overlay: rgba(26, 23, 18, 0.55);
     --hero-overlay-top: rgba(0, 0, 0, 0.25);
     --hero-overlay-mid: rgba(0, 0, 0, 0.4);

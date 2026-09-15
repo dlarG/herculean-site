@@ -12,17 +12,29 @@
       </div>
 
       {{-- Center: SLSU logo (larger) --}}
-      <div class="flex justify-center">
-        <img src="{{ asset('assets/navbar-logo.png') }}"
-             alt="SLSU Sogod"
-             class="h-20 sm:h-28 lg:h-32 w-auto object-contain transition-transform duration-300 hover:scale-105">
+       <div class="flex justify-center sm:justify-end">
+        {{-- Dark-mode logo --}}
+        <img src="{{ asset('assets/intrams-white.png') }}"
+             alt="SLSU Intramurals"
+             class="h-16 sm:h-20 lg:h-24 w-auto object-contain transition-transform duration-300 hover:scale-105 logo-dark">
+        
+        {{-- Light-mode logo --}}
+        <img src="{{ asset('assets/intrams-black.png') }}"
+             alt="SLSU Intramurals"
+             class="h-16 sm:h-20 lg:h-24 w-auto object-contain transition-transform duration-300 hover:scale-105 logo-light hidden">
       </div>
 
       {{-- Right: Herculean Dragon logo --}}
       <div class="flex justify-center sm:justify-start">
-        <img src="{{ asset('assets/logo.png') }}"
+        {{-- Dark-mode logo (White text) --}}
+        <img src="{{ asset('assets/HD_Logo_LIGHT.png') }}"
              alt="Herculean Dragon"
-             class="h-16 sm:h-20 lg:h-24 w-auto object-contain transition-transform duration-300 hover:scale-105">
+             class="h-16 sm:h-20 lg:h-30 w-auto object-contain transition-transform duration-300 hover:scale-105 logo-dark">
+        
+        {{-- Light-mode logo (Dark text) --}}
+        <img src="{{ asset('assets/HD_Logo_DARK.png') }}"
+             alt="Herculean Dragon"
+             class="h-16 sm:h-20 lg:h-30 w-auto object-contain transition-transform duration-300 hover:scale-105 logo-light hidden">
       </div>
 
     </div>
@@ -57,8 +69,8 @@
 
       <div class="mt-8">
         <a href="#categories"
-           class="inline-block px-6 py-3 rounded-md font-semibold transition-colors"
-           style="background: var(--gold); color: var(--black);">
+           class="inline-block px-6 py-3 text-white rounded-md font-semibold transition-colors"
+           style="background: var(--gold);">
           Explore Categories
         </a>
     </div>

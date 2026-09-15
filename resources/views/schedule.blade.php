@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Schedule · Herculean Dragon</title>
-  <link rel="icon" type="image/png" href="{{ asset('assets/logo.png') }}">
+  <link rel="icon" type="image/png" href="{{ asset('assets/HD_Logo_DARK.png') }}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,17 +11,23 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
-      --bg: #0D0D0C;
-      --bg-panel: #191814;
-      --bg-panel-soft: rgba(242, 185, 12, 0.04);
+      --bg: #0d0d0c;
+      --bg-panel: #131a30;
+      --bg-panel-soft: rgba(16, 21, 43, 0.4);
       --border: rgba(242, 185, 12, 0.14);
-      --border-strong: rgba(242, 185, 12, 0.25);
-      --gold: #F2B90C;
-      --gold-soft: #C99A1E;
-      --ink: #F4F1E8;
-      --ink-muted: #B9B4A6;
-      --pill-bg: rgba(242, 185, 12, 0.12);
-      --pill-border: rgba(242, 185, 12, 0.25);
+      --border-strong: rgba(16, 21, 43, 0.6);
+      --gold: #3a4a8a;
+      --gold-soft: #252e4d;
+      --ink: #f4f1e8;
+      --ink-muted: #b9b4a6;
+      --pill-bg: rgba(58, 74, 138, 0.2);
+      --pill-border: rgba(58, 74, 138, 0.4);
+      --shadow-gold: rgba(16, 21, 43, 0.6);
+      --overlay: rgba(0, 0, 0, 0.7);
+      --hero-overlay-top: rgba(0, 0, 0, 0.55);
+      --hero-overlay-mid: rgba(0, 0, 0, 0.75);
+      --hero-overlay-bottom: rgba(0, 0, 0, 0.9);
+      --hero-tint-opacity: 0.28;
     }
     body { background: var(--bg); color: var(--ink); font-family: 'Inter', sans-serif; }
     .display { font-family: 'Anton', sans-serif; letter-spacing: 0.01em; }
@@ -99,11 +105,11 @@
 <body class="antialiased">
 
   {{-- ===== HEADER ===== --}}
-  <header class="sticky top-0 z-30 backdrop-blur-sm"
+  <header class="sticky p-3 top-0 z-30 backdrop-blur-sm"
           style="background: color-mix(in srgb, var(--bg) 92%, transparent); border-bottom: 1px solid var(--border);">
     <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between gap-4">
       <a href="{{ route('home') }}" class="flex items-center gap-3 group shrink-0">
-        <img src="{{ asset('assets/navbar-logo.png') }}"
+        <img src="{{ asset('assets/HD_Logo_LIGHT.png') }}"
              alt="Herculean Dragon Logo"
              class="h-14 w-auto object-contain transition-opacity group-hover:opacity-90"
              onerror="this.style.display='none';">
