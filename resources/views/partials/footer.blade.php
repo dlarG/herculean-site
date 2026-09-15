@@ -16,7 +16,7 @@
           <span class="w-px h-10" style="background: var(--border);"></span>
 
           {{-- Intramurals logo --}}
-          <img src="{{ asset('assets/logo.png') }}"
+          <img src="{{ asset('assets/HD_Logo_DARK_Horizontal.png') }}"
                alt="SLSU Intramurals"
                class="h-14 w-auto object-contain">
         </div>

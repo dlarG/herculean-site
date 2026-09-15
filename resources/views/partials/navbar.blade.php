@@ -3,14 +3,14 @@
   <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between gap-4">
     <a href="{{ route('home') }}" class="flex items-center gap-3 group shrink-0">
       {{-- Dark-mode logo --}}
-      <img src="{{ asset('assets/HD_Logo_LIGHT_Horizontal.png') }}"
+      <img src="{{ asset('assets/HD_Logo_DARK_Horizontal.png') }}"
            alt="Herculean Dragon Logo"
-           class="h-19 w-auto object-contain transition-opacity group-hover:opacity-90 logo-dark">
+           class="h-17 w-auto object-contain transition-opacity group-hover:opacity-90 logo-dark">
 
       {{-- Light-mode logo --}}
       <img src="{{ asset('assets/HD_Logo_DARK_Horizontal.png') }}"
            alt="Herculean Dragon Logo"
-           class="h-19 w-auto object-contain transition-opacity group-hover:opacity-90 logo-light hidden">
+           class="h-17 w-auto object-contain transition-opacity group-hover:opacity-90 logo-light hidden">
     </a>
 
     <div class="flex items-center gap-3 sm:gap-6">
