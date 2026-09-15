@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>My Dashboard — Herculean Dragon</title>
+    <link rel="icon" type="image/png" href="{{ asset('assets/HD_Logo_DARK.png') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>

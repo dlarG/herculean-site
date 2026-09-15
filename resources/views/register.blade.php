@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Register · Herculean Dragon</title>
-  <link rel="icon" type="image/png" href="{{ asset('assets/logo.png') }}">
+  <link rel="icon" type="image/png" href="{{ asset('assets/HD_Logo_DARK.png') }}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -106,7 +106,7 @@
           style="background: color-mix(in srgb, var(--bg) 92%, transparent); border-bottom: 1px solid var(--border);">
     <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between gap-4">
       <a href="{{ route('home') }}" class="flex items-center gap-3 group shrink-0">
-        <img src="{{ asset('assets/navbar-logo.png') }}"
+        <img src="{{ asset('assets/HD_Logo_DARK_Horizontal.png') }}"
              alt="Herculean Dragon Logo"
              class="h-14 w-auto object-contain transition-opacity group-hover:opacity-90"
              onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='inline-block';">

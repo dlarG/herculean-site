@@ -109,9 +109,9 @@
           style="background: color-mix(in srgb, var(--bg) 92%, transparent); border-bottom: 1px solid var(--border);">
     <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between gap-4">
       <a href="{{ route('home') }}" class="flex items-center gap-3 group shrink-0">
-        <img src="{{ asset('assets/HD_Logo_LIGHT.png') }}"
+        <img src="{{ asset('assets/HD_Logo_LIGHT_Horizontal.png') }}"
              alt="Herculean Dragon Logo"
-             class="h-14 w-auto object-contain transition-opacity group-hover:opacity-90"
+             class="h-16 w-auto object-contain transition-opacity group-hover:opacity-90"
              onerror="this.style.display='none';">
       </a>
       <a href="{{ route('home') }}"
