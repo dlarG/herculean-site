@@ -23,5 +23,6 @@ class Student extends Authenticatable
 
     protected $casts = [
         'must_change_password' => 'boolean',
+        'password' => 'hashed',
     ];
 }

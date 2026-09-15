@@ -18,8 +18,14 @@ class CoachSeeder extends Seeder
     public function run(): void
     {
         $assignments = [
-            'Gerald Catina'            => ['100m Sprint', '200m Sprint', '400m Sprint', '4x100m Relay', '4x400m Relay', 'Long Jump', 'Triple Jump', 'Shot Put', 'Discus', 'Javelin'],
-            'John Ryan Mangmang'       => ['100m Sprint', '200m Sprint', '400m Sprint', '4x100m Relay', '4x400m Relay', 'Long Jump', 'Triple Jump', 'Shot Put', 'Discus', 'Javelin', 'Table Tennis'],
+            'Gerald Catina' => [
+                'Sprint', 'Relay', 'Runs',           // parents → expand to children
+                'Long Jump', 'Triple Jump', 'Shot Put', 'Discus', 'Javelin',
+            ],
+            'John Ryan Mangmang' => [
+                'Sprint', 'Relay', 'Runs', 'Table Tennis',
+                'Long Jump', 'Triple Jump', 'Shot Put', 'Discus', 'Javelin',
+            ],
             'Mark Clarence Intal'      => ['Badminton'],
             'Edevan Jay Magdula'       => ['Badminton', 'Pop Dance'],
             'Joedee Mark Rodriguez'    => ['Baseball', 'Football'],

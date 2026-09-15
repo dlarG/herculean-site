@@ -34,7 +34,7 @@
 
     .pill {
       background: var(--pill-bg);
-      color: var(--gold-soft);
+      color: white;
       border: 1px solid var(--pill-border);
     }
 

@@ -144,7 +144,7 @@ class RegistrationController extends Controller
                     ['student_number' => $memberData['student_number']],
                     [
                         'full_name' => $memberData['full_name'],
-                        'password'  => Hash::make($memberData['student_number']),
+                        'password'  => $memberData['student_number'],  // ← plain text, cast hashes it
                     ]
                 );
             }

@@ -36,7 +36,7 @@
         input.field { background-image: none; padding-right: 0.75rem; }
         .pill {
             background: rgba(242,185,12,0.12);
-            color: var(--gold-soft);
+            color: white;
             border: 1px solid rgba(242,185,12,0.25);
         }
 

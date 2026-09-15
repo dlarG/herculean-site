@@ -55,7 +55,9 @@ class StudentAuthController extends Controller
 
     public function showChangePasswordForm()
     {
-        return view('student.auth.change-password');
+        $student = Auth::guard('student')->user();
+
+        return view('student.auth.change-password', compact('student'));
     }
 
     public function changePassword(Request $request)

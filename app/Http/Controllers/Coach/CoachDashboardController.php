@@ -47,13 +47,23 @@ class CoachDashboardController extends Controller
     public function participants(Request $request)
     {
         $coach = Auth::guard('coach')->user();
-        $categoryIds = $this->registrableCategoryIds($coach);
+        $registrableIds = $this->registrableCategoryIds($coach);
 
         $query = EntryMember::with('entry.category')
-            ->whereHas('entry', fn ($q) => $q->whereIn('category_id', $categoryIds));
+            ->whereHas('entry', fn ($q) => $q->whereIn('category_id', $registrableIds));
 
-        if ($catId = $request->query('category_id')) {
-            $query->whereHas('entry', fn ($q) => $q->where('category_id', $catId));
+        // Filter logic: accept either a leaf category OR a parent category
+        if ($filterCatId = $request->query('category_id')) {
+            $filterCat = \App\Models\Category::find($filterCatId);
+
+            if ($filterCat && $filterCat->has_variants) {
+                // Parent selected → match any of its children
+                $childIds = $filterCat->variants()->pluck('id');
+                $query->whereHas('entry', fn ($q) => $q->whereIn('category_id', $childIds));
+            } else {
+                // Leaf category selected → match directly
+                $query->whereHas('entry', fn ($q) => $q->where('category_id', $filterCatId));
+            }
         }
 
         if ($gender = $request->query('gender')) {
@@ -63,16 +73,23 @@ class CoachDashboardController extends Controller
         if ($search = $request->query('search')) {
             $query->where(function ($q) use ($search) {
                 $q->where('full_name', 'like', "%{$search}%")
-                  ->orWhere('student_number', 'like', "%{$search}%");
+                ->orWhere('student_number', 'like', "%{$search}%");
             });
         }
 
         $participants = $query->latest()->paginate(50)->withQueryString();
 
-        // Filter dropdown needs the expanded (leaf) categories too —
-        // filtering by "Mass Dance" itself would never match anything.
-        $categories = $coach->categories()->with('variants')->orderBy('name')->get()
-            ->flatMap(fn ($cat) => $cat->has_variants ? $cat->variants : collect([$cat]))
+        // Filter dropdown: show ALL assigned categories (parents + children)
+        // so coaches can pick either a general group or a specific variant.
+        $categories = $coach->categories()->orderBy('name')->get()
+            ->flatMap(function ($cat) {
+                if ($cat->has_variants) {
+                    // Parent — include itself AND its children for the dropdown
+                    return collect([$cat])
+                        ->merge($cat->variants()->orderBy('sort_order')->get());
+                }
+                return collect([$cat]);
+            })
             ->unique('id')
             ->values();
 

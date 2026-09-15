@@ -20,16 +20,37 @@
         style="background: var(--bg-panel); border: 1px solid var(--border);">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
       <div>
-        <label class="block text-xs uppercase tracking-wider mb-1.5" style="color: var(--ink-muted);">Category</label>
-        <select name="category_id" class="field w-full rounded px-3 py-2 text-sm" onchange="this.form.submit()">
-          <option value="">All my events</option>
-          @foreach ($categories as $cat)
-            <option value="{{ $cat->id }}" @selected((string) request('category_id') === (string) $cat->id)>
-              {{ $cat->name }}
+      <label class="block text-xs uppercase tracking-wider mb-1.5" style="color: var(--ink-muted);">Category</label>
+      <select name="category_id" class="field w-full rounded px-3 py-2 text-sm" onchange="this.form.submit()">
+        <option value="">All my events</option>
+        @php
+          // Group dropdown entries: parents first, then their children indented
+          $parents = $categories->filter(fn ($c) => is_null($c->parent_id))->sortBy('name');
+          $childrenByParent = $categories->filter(fn ($c) => !is_null($c->parent_id))
+                              ->groupBy('parent_id');
+        @endphp
+
+        @foreach ($parents as $parent)
+          @if ($parent->has_variants)
+            {{-- Parent with variants — bold as "group header" --}}
+            <option value="{{ $parent->id }}" @selected((string) request('category_id') === (string) $parent->id)>
+              ── ALL {{ $parent->name }} ──
             </option>
-          @endforeach
-        </select>
-      </div>
+
+            @foreach ($childrenByParent->get($parent->id, collect()) as $child)
+              <option value="{{ $child->id }}" @selected((string) request('category_id') === (string) $child->id)>
+                &nbsp;&nbsp;{{ $child->name }}
+              </option>
+            @endforeach
+          @else
+            {{-- Standalone — just show it --}}
+            <option value="{{ $parent->id }}" @selected((string) request('category_id') === (string) $parent->id)>
+              {{ $parent->name }}
+            </option>
+          @endif
+        @endforeach
+      </select>
+    </div>
 
       <div>
         <label class="block text-xs uppercase tracking-wider mb-1.5" style="color: var(--ink-muted);">Gender</label>
@@ -131,7 +152,7 @@
               @endif
             </td>
             <td class="py-2.5 px-4">
-              <span class="pill text-[10px] font-medium rounded-full px-2.5 py-1 whitespace-nowrap">
+              <span class="pill text-white text-[10px] font-medium rounded-full px-2.5 py-1 whitespace-nowrap">
                 {{ $p->entry->category->name }}
               </span>
             </td>

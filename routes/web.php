@@ -64,5 +64,14 @@ Route::prefix('student')->name('student.')->group(function () {
     Route::middleware('auth:student')->group(function () {
         Route::get('/dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
         Route::post('/logout', [StudentAuthController::class, 'logout'])->name('logout');
+        Route::middleware('auth:student')->group(function () {
+        Route::get('/dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
+
+        // NEW — change password
+        Route::get('/password/change', [StudentAuthController::class, 'showChangePasswordForm'])->name('password.change');
+        Route::post('/password/change', [StudentAuthController::class, 'changePassword'])->name('password.update');
+
+        Route::post('/logout', [StudentAuthController::class, 'logout'])->name('logout');
+        });
     });
 });
