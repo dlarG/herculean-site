@@ -11,14 +11,17 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
   <style>
     :root {
-      --bg: #0D0D0C;
-      --bg-panel: #191814;
-      --bg-panel-soft: rgba(242, 185, 12, 0.04);
-      --border: rgba(242, 185, 12, 0.14);
-      --border-strong: rgba(242, 185, 12, 0.25);
-      --gold: #F2B90C;
-      --gold-soft: #C99A1E;
-      --ink: #F4F1E8;
+      --bg: #0d0d0c;
+      --bg-panel: #131a30;
+      --bg-panel-soft: rgba(16, 21, 43, 0.4);
+      --border: rgba(255, 255, 255, 0.15); /* Was 0.08 — now more visible */
+      --border-strong: rgba(255, 255, 255, 0.35);
+      --gold: #3a4a8a;
+      --gold-soft: #252e4d;
+      --ink: #f4f1e8;
+      --ink-muted: #b9b4a6;
+      --pill-bg: rgba(58, 74, 138, 0.2);
+      --pill-border: rgba(58, 74, 138, 0.4);
       --ink-muted: #B9B4A6;
       --pill-bg: rgba(242, 185, 12, 0.12);
       --pill-border: rgba(242, 185, 12, 0.25);
@@ -47,7 +50,7 @@
     .field::placeholder { color: var(--ink-muted); opacity: 0.6; }
 
     .logo-glow {
-      filter: drop-shadow(0 0 40px rgba(242, 185, 12, 0.25));
+      filter: drop-shadow(0 0 40px rgba(12, 77, 242, 0.25));
     }
 
     .auth-card {
@@ -94,7 +97,7 @@
 
       {{-- Hero dragon logo --}}
       <div class="flex justify-center mb-8">
-        <img src="{{ asset('assets/hero-dragon.png') }}"
+        <img src="{{ asset('assets/HD_Logo_LIGHT.png') }}"
              alt="Herculean Dragon mascot"
              class="h-40 sm:h-48 w-auto object-contain logo-glow"
              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -232,8 +235,8 @@
 
           {{-- Submit --}}
           <button type="submit"
-                  class="w-full font-semibold rounded-lg px-4 py-3 text-black text-base transition-all hover:scale-[1.01] active:scale-[0.99]"
-                  style="background: var(--gold); box-shadow: 0 14px 40px -12px rgba(242,185,12,0.5);">
+                  class="w-full font-semibold rounded-lg px-4 py-3 text-white text-base transition-all hover:scale-[1.01] active:scale-[0.99]"
+                  style="background: var(--gold); box-shadow: 0 14px 40px -12px rgba(12, 58, 242, 0.5);">
             Log in to Student Portal
           </button>
         </form>
