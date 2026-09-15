@@ -14,6 +14,11 @@ class Student extends Authenticatable
         'full_name',
         'password',
         'must_change_password',
+        'program',
+        'year_level',
+        'gender',
+        'contact_number',
+        'facebook_link',
     ];
 
     protected $hidden = [

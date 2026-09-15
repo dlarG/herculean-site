@@ -66,8 +66,13 @@ Route::prefix('student')->name('student.')->group(function () {
         Route::post('/logout', [StudentAuthController::class, 'logout'])->name('logout');
         Route::middleware('auth:student')->group(function () {
         Route::get('/dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
-
-        // NEW — change password
+        Route::get('/applications', [StudentDashboardController::class, 'applications'])->name('applications');
+        Route::delete('/applications/{entry}', [StudentDashboardController::class, 'destroyApplication'])->name('applications.destroy');
+                // NEW — change password
+        Route::get('/events', [StudentDashboardController::class, 'events'])->name('events');
+        Route::post('/events/{category}/apply', [StudentDashboardController::class, 'applyToCategory'])->name('events.apply');
+        Route::get('/profile', [StudentDashboardController::class, 'profile'])->name('profile');
+        Route::post('/profile', [StudentDashboardController::class, 'updateProfile'])->name('profile.update');
         Route::get('/password/change', [StudentAuthController::class, 'showChangePasswordForm'])->name('password.change');
         Route::post('/password/change', [StudentAuthController::class, 'changePassword'])->name('password.update');
 
